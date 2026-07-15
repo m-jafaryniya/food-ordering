@@ -14,7 +14,7 @@ class Restaurateur : public User {
     void show_restaurants() const;
 
     private:
-    std::vector<Restaurant*> restaurants;
+
 };
 
 #endif //FOOD_ORDERING_SYSTEM_RESTAURATEUR_H

@@ -19,9 +19,6 @@ void Restaurateur::remove_restaurant(const Restaurant *restaurant) {
 
 }
 
-std::vector<Restaurant*>& Restaurateur::get_restaurants() {
-    return restaurants;
-}
 
 void Restaurateur::show_restaurants() const {
 
