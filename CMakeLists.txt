@@ -50,6 +50,8 @@ add_executable(Food_ordering_system main.cpp
         src/services/Order.cpp
         include/dao/CartDAO.h
         src/dao/CartDAO.cpp
+        include/dao/OrderDAO.h
+        src/dao/OrderDAO.cpp
 )
 
 target_include_directories(Food_ordering_system PRIVATE include)
