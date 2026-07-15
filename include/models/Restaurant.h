@@ -40,7 +40,6 @@ private:
     int OperationTime;
     std::string phone;
     std::string information;
-    std::vector<Menu *> MenuList;
 };
 
 #endif //FOOD_ORDERING_SYSTEM_RESTAURANT_H
