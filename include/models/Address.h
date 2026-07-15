@@ -8,6 +8,14 @@ public:
     Address();
     Address(const std::string &cityName, const std::string &streetName, const std::string &alleyName, int block);
     virtual ~Address();
+    void set_cityName(const std::string &cityName);
+    void set_streetName(const std::string &streetName);
+    void set_alleyName(const std::string &alleyName);
+    void set_block(int block);
+    std::string get_cityName();
+    std::string get_streetName();
+    std::string get_alleyName();
+    int get_block();
 
 private:
     std::string cityName;
