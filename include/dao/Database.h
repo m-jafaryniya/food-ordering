@@ -11,6 +11,7 @@ class Database {
     Database(const std::string& FileName);
     ~Database();
     sqlite3* getConnection() const;
+    void createTables();
 
     private:
     sqlite3 *db;
