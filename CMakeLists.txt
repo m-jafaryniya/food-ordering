@@ -26,6 +26,31 @@ add_executable(Food_ordering_system main.cpp
         src/models/SystemAdministrator.cpp
         src/models/Customer.cpp
         src/services/Cart.cpp
+        include/services/CartItem.h
+        src/services/CartItem.cpp
+        include/dao/Database.h
+        sqlite/sqlite3.h
+        sqlite/sqlite3.c
+        src/dao/Database.cpp
+        include/dao/CustomerDAO.h
+        src/dao/CustomerDAO.cpp
+        include/dao/RestaurantDAO.h
+        src/dao/RestaurantDAO.cpp
+        include/dao/RestaurateurDAO.h
+        src/dao/RestaurateurDAO.cpp
+        include/dao/SystemAdministratorDAO.h
+        src/dao/SystemAdministratorDAO.cpp
+        include/services/Login.h
+        src/services/Login.cpp
+        include/services/CustomerService.h
+        src/services/CustomerService.cpp
+        include/dao/MenuDAO.h
+        src/dao/MenuDAO.cpp
+        include/services/Order.h
+        src/services/Order.cpp
+        include/dao/CartDAO.h
+        src/dao/CartDAO.cpp
 )
 
 target_include_directories(Food_ordering_system PRIVATE include)
+target_include_directories(Food_ordering_system PRIVATE sqlite)
