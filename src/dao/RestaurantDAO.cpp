@@ -8,7 +8,7 @@ RestaurantDAO::RestaurantDAO(Database* database) {
 
 void RestaurantDAO::insertRestaurant(const Restaurant& restaurant) {
     sqlite3_stmt* stmt = nullptr;
-    std::string sql = "INSERT INTO RESTAURANT ( ID, NAME, CITY, STREET, ALLEY, BLOCK, ACTIVE, OPERATIONTIME, PHONE, INFORMATION )"
+    std::string sql = "INSERT INTO RESTAURANT ( ID, NAME, CITY, STREET, ALLEY, BLOCK, ACTIVE, OPERATION_TIME, PHONE, INFORMATION )"
                       " VALUES (?,?,?,?,?,?,?,?,?,?)";
     int rc = sqlite3_prepare_v2(database->getConnection(), sql.c_str(), -1, &stmt, NULL);
     if (rc != SQLITE_OK) {

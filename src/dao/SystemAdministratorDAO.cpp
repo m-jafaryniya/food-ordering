@@ -8,7 +8,7 @@ SystemAdministratorDAO::SystemAdministratorDAO(Database* database) {
 }
 
 void SystemAdministratorDAO::insertSystemAdministrator(const SystemAdministrator& systemAdministrator) {
-    std::string sql = "INSERT INTO SYSTEMADMINISTRATOR ( PHONE, PASSWORD, USERNAME, ID) VALUES ('" +
+    std::string sql = "INSERT INTO SYSTEM_ADMINISTRATOR ( PHONE, PASSWORD, USERNAME, ID) VALUES ('" +
     systemAdministrator.get_phoneNumber() + "', '" +
         systemAdministrator.get_password() + "', '" +
             systemAdministrator.get_userName() + "', '" +
@@ -31,7 +31,7 @@ static int callbackExists(void* data, int argc, char** argv, char** azColName) {
 
 bool SystemAdministratorDAO::existByPhone(const std::string &phone) {
     bool exists = false;
-    std::string sql = "SELECT ID FROM SYSTEMADMINISTTRATOR WHERE PHONE='" + phone + "';";
+    std::string sql = "SELECT ID FROM SYSTEM_ADMINISTRATOR WHERE PHONE='" + phone + "';";
     char *messageError;
     sqlite3_exec(database->getConnection(), sql.c_str(), callbackExists, &exists, &messageError);
     if (messageError) {
@@ -52,7 +52,7 @@ static int callbackSystemAdministratorByPhone(void* data, int argc, char** argv,
 SystemAdministrator SystemAdministratorDAO::getSystemAdministratorByPhone(const std::string& phone) {
     SystemAdministrator systemAdministrator;
     char* messageError = nullptr;
-    std::string sql = "SELECT PHONE, PASSWORD, USERNAME, ID ""FROM SYSTEMADMINISTTRATOR WHERE PHONE='" + phone + "';";
+    std::string sql = "SELECT PHONE, PASSWORD, USERNAME, ID ""FROM SYSTEM_ADMINISTRATOR WHERE PHONE='" + phone + "';";
     sqlite3_exec(database->getConnection(), sql.c_str(), callbackSystemAdministratorByPhone, &systemAdministrator, &messageError);
     if (messageError) {
         sqlite3_free(messageError);
@@ -68,7 +68,7 @@ static int callbackPassword(void* data, int argc, char** argv, char** azColName)
 
 bool SystemAdministratorDAO::checkPassword(const std::string &phone, const std::string &password) {
     std::string dbPassword;
-    std::string sql = "SELECT PASSWORD FROM SYSTEMADMINISTTRATOR ""WHERE PHONE='" + phone + "';";
+    std::string sql = "SELECT PASSWORD FROM SYSTEM_ADMINISTRATOR ""WHERE PHONE='" + phone + "';";
     char *messageError;
     sqlite3_exec(database->getConnection(), sql.c_str(), callbackPassword, &dbPassword, &messageError);
     if (messageError) {
