@@ -47,6 +47,10 @@ std::string Restaurant::get_information() const {
     return information;
 }
 
+void Restaurant::set_id(int id) {
+    this->ID = id;
+}
+
 void Restaurant::set_name(const std::string& name) {
     this->name = name;
 }
