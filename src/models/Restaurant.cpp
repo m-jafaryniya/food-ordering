@@ -26,7 +26,7 @@ std::string Restaurant::get_name() const {
     return name;
 }
 
-Address Restaurant::get_address() {
+Address Restaurant::get_address() const {
     return address;
 }
 

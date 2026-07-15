@@ -16,11 +16,12 @@ public:
     virtual ~Restaurant();
     int get_ID() const;
     std::string get_name() const;
-    Address get_address();
+    Address get_address() const;
     bool get_active() const;
     int get_operationTime() const;
     std::string get_phone() const;
     std::string get_information() const;
+    void set_id(int id);
     void set_name(const std::string &name);
     void set_address(const Address& address);
     void set_active(const bool active);
