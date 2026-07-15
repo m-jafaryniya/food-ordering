@@ -8,7 +8,6 @@ class Restaurateur : public User {
     public:
     Restaurateur();
     Restaurateur(const std::string &phoneNumber, const std::string &password, const std::string &userName);
-    virtual ~Restaurateur();
     void add_restaurant(const Restaurant* restaurant);
     void remove_restaurant(const Restaurant* restaurant);
     std::vector<Restaurant*>& get_restaurants();
