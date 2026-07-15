@@ -26,7 +26,7 @@ void CustomerDAO::insertCustomer(const Customer& customer) {
 void CustomerDAO::deleteCustomer(const Customer& customer) {
     std::string sql_delete = "DELETE FROM CUSTOMER WHERE ID =" + std::to_string(customer.get_id()) + ";";
     char* messageError;
-    sqlite3_exec(database->getConnection(), sql_delete.c_str(), NULL, 0, &messageError);
+    sqlite3_exec(database->getConnection(), sql_delete.c_str(), nullptr, 0, &messageError);
 }
 
 bool CustomerDAO::updateCustomer(const Customer& customer) {
@@ -36,7 +36,7 @@ bool CustomerDAO::updateCustomer(const Customer& customer) {
                 ",USERNAME='" + customer.get_userName() + "' " +
                     "WHERE ID=" + std::to_string(customer.get_id()) + ";";
     char* messageError;
-    sqlite3_exec(database->getConnection(), sql_update.c_str(), NULL, 0, &messageError);
+    sqlite3_exec(database->getConnection(), sql_update.c_str(), nullptr, 0, &messageError);
 }
 
 static int callbackGetCustomer(void* data, int argc, char** argv, char** azColName) {
