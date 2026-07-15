@@ -48,3 +48,7 @@ void User::showInformation() const {
     std::cout << "phone number : " << this->phoneNumber << std::endl;
     std::cout << "id : " << this->id << std::endl;
 }
+
+void User::set_id(int id) {
+    this->id = id;
+}

@@ -16,6 +16,7 @@ public:
     std::string get_password() const;
     std::string get_userName() const;
     void showInformation() const;
+    void set_id(int id);
 
 private:
     int id;
