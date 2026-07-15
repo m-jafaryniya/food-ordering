@@ -9,4 +9,12 @@ Customer::Customer(const std::string &phoneNumber, const std::string &password, 
 
 Customer::~Customer() {}
 
+void Customer::set_wallet(double wallet) {
+    this->wallet = wallet;
+}
+
+double Customer::get_wallet() const {
+    return wallet;
+}
+
 
