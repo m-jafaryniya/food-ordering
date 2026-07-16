@@ -18,6 +18,7 @@ sqlite3* Database::getConnection() const {
 }
 
 void Database::createTables() {
+    char *errMsg = nullptr;
     const char* customerTable =
         "CREATE TABLE IF NOT EXISTS CUSTOMER("
         "ID INTEGER PRIMARY KEY,"
@@ -26,6 +27,10 @@ void Database::createTables() {
         "USERNAME TEXT NOT NULL,"
         "WALLET REAL DEFAULT 0"
         ");";
+    if (sqlite3_exec(db, customerTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
     const char* restaurateurTable =
         "CREATE TABLE IF NOT EXISTS RESTAURATEUR ("
@@ -34,6 +39,10 @@ void Database::createTables() {
         "PASSWORD TEXT NOT NULL,"
         "USERNAME TEXT NOT NULL"
         ");";
+    if (sqlite3_exec(db, restaurateurTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
     const char* system_administratorTable =
         "CREATE TABLE IF NOT EXISTS SYSTEM_ADMINISTRATOR ("
@@ -42,10 +51,14 @@ void Database::createTables() {
         "PASSWORD TEXT NOT NULL,"
         "USERNAME TEXT NOT NULL"
         ");";
+    if (sqlite3_exec(db, system_administratorTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
     const char* restaurantTable =
         "CREATE TABLE IF NOT EXISTS RESTAURANT ("
-        "ID INTEGER PRIMARY KEY"
+        "ID INTEGER PRIMARY KEY,"
         "NAME TEXT NOT NULL,"
         "CITY TEXT NOT NULL,"
         "STREET TEXT NOT NULL,"
@@ -56,6 +69,10 @@ void Database::createTables() {
         "PHONE TEXT UNIQUE NOT NULL,"
         "INFORMATION TEXT NOT NULL"
         ");";
+    if (sqlite3_exec(db, restaurantTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
     const char* menuTable =
         "CREATE TABLE IF NOT EXISTS MENU ("
@@ -66,6 +83,10 @@ void Database::createTables() {
         "PRICE REAL,"
         "AVAILABLE INTEGER"
         ");";
+    if (sqlite3_exec(db, menuTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
     const char* foodTable =
         "CREATE TABLE IF NOT EXISTS FOOD ("
@@ -73,6 +94,10 @@ void Database::createTables() {
         "COOK_TIME INTEGER,"
         "FOREIGN KEY(ID) REFERENCES MENU(ID)"
         ");";
+    if (sqlite3_exec(db, foodTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
     const char* drinkTable =
         "CREATE TABLE IF NOT EXISTS DRINK ("
@@ -80,6 +105,10 @@ void Database::createTables() {
         "VOLUME INTEGER,"
         "FOREIGN KEY(ID) REFERENCES MENU(ID)"
         ");";
+    if (sqlite3_exec(db, drinkTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
     const char* cartTable =
         "CREATE TABLE IF NOT EXISTS CART_ITEMS ("
@@ -88,15 +117,35 @@ void Database::createTables() {
         "ITEM_TYPE TEXT NOT NULL,"
         "QUANTITY INTEGER"
         ");";
+    if (sqlite3_exec(db, cartTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
-    char *errMsg = nullptr;
-    sqlite3_exec(db, customerTable, nullptr, nullptr, &errMsg);
-    sqlite3_exec(db, restaurateurTable, nullptr, nullptr, &errMsg);
-    sqlite3_exec(db, system_administratorTable, nullptr, nullptr, &errMsg);
-    sqlite3_exec(db, restaurantTable, nullptr, nullptr, &errMsg);
-    sqlite3_exec(db, menuTable, nullptr, nullptr, &errMsg);
-    sqlite3_exec(db, foodTable, nullptr, nullptr, &errMsg);
-    sqlite3_exec(db, drinkTable, nullptr, nullptr, &errMsg);
-    sqlite3_exec(db, cartTable, nullptr, nullptr, &errMsg);
+    const char* ordersTable =
+        "CREATE TABLE IF NOT EXISTS ORDERS("
+        "ORDER_ID INTEGER PRIMARY KEY,"
+        "CUSTOMER_ID INTEGER NOT NULL,"
+        "RESTAURANT_ID INTEGER NOT NULL,"
+        "TOTAL_PRICE REAL NOT NULL,"
+        "STATUS TEXT NOT NULL"
+        ");";
+    if (sqlite3_exec(db, ordersTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
+
+    const char* cart_itemsTable =
+        "CREATE TABLE IF NOT EXISTS CART_ITEM ("
+        "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "ORDER_ID INTEGER NOT NULL,"
+        "ITEM_ID INTEGER NOT NULL,"
+        "QUANTITY INTEGER NOT NULL,"
+        "UNIT_PRICE REAL NOT NULL"
+        ");";
+    if (sqlite3_exec(db, cart_itemsTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cout << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    };
 
 }
