@@ -21,6 +21,7 @@ class Cart {
 
     private:
     int customerId;
+    int restaurantId;
     std::vector<CartItem> items;
 };
 
