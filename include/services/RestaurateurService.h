@@ -1,0 +1,10 @@
+
+#ifndef FOOD_ORDERING_SYSTEM_RESTAURATEURSERVICE_H
+#define FOOD_ORDERING_SYSTEM_RESTAURATEURSERVICE_H
+
+class RestaurateurService {
+public:
+    RestaurateurService();
+};
+
+#endif //FOOD_ORDERING_SYSTEM_RESTAURATEURSERVICE_H
