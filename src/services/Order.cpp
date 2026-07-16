@@ -5,7 +5,17 @@ Order::Order() {
     orderId=0;
     customerId=0;
     restaurantId=0;
-    delivered=false;
+    totalPrice=0;
+    status=OrderStatus::pending;
+}
+
+Order::Order(int id, int customerId, int restaurantId, const std::vector<CartItem> &items, double totalPrice, OrderStatus status) {
+    orderId=id;
+    this->customerId=customerId;
+    this->restaurantId=restaurantId;
+    this->items=items;
+    this->totalPrice=totalPrice;
+    this->status=status;
 }
 
 void Order::set_orderId(int id) {
@@ -19,34 +29,38 @@ void Order::set_restaurantId(int id) {
     restaurantId=id;
 }
 
-void Order::set_delivered(bool delivered) {
-    this->delivered=delivered;
+void Order::set_status(OrderStatus status) {
+    this->status=status;
 }
 
-int Order::get_orderId() {
+void Order::set_totalPrice(double price) {
+    totalPrice=price;
+}
+
+int Order::get_orderId() const {
     return orderId;
 }
 
-int Order::get_customerId() {
+int Order::get_customerId() const {
     return customerId;
 }
 
-int Order::get_restaurantId() {
+int Order::get_restaurantId() const {
     return restaurantId;
 }
 
-double Order::get_totalPrice() {
+double Order::get_totalPrice() const {
     double totalPrice=0;
-    for (const CartItem& item : cartItems) {
+    for (const CartItem& item : items) {
         totalPrice += item.get_totalPrice();
     }
     return totalPrice;
 }
 
-bool Order::get_delivered() {
-    return delivered;
+OrderStatus Order::get_status() const {
+    return status;
 }
 
 std::vector<CartItem>& Order::get_cartItems() {
-    return cartItems;
+    return items;
 }
