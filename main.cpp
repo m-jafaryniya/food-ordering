@@ -1,15 +1,25 @@
 #include <iostream>
 
-// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+#include "dao/CustomerDAO.h"
+#include "dao/Database.h"
+#include "dao/RestaurantDAO.h"
+#include "dao/RestaurateurDAO.h"
+#include "dao/SystemAdministratorDAO.h"
+#include "services/CustomerService.h"
+#include "services/RestaurateurService.h"
+#include "services/Login.h"
+
 int main() {
-    // TIP Press <shortcut actionId="RenameElement"/> when your caret is at the <b>lang</b> variable name to see how CLion can help you rename it.
-    auto lang = "C++";
-    std::cout << "Hello and welcome to " << lang << "!\n";
+    Database db("food_ordering_system");
+    db.createTables();
 
-    for (int i = 1; i <= 5; i++) {
-        // TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        std::cout << "i = " << i << std::endl;
-    }
+    CustomerDAO customerDAO(&db);
+    RestaurantDAO restaurantDAO(&db);
+    RestaurateurDAO restaurateurDAO(&db);
+    SystemAdministratorDAO system_administratorDAO(&db);
 
-    return 0;// TIP See CLion help at <a href="https://www.jetbrains.com/help/clion/">jetbrains.com/help/clion/</a>. Also, you can try interactive lessons for CLion by selecting 'Help | Learn IDE Features' from the main menu.
+    CustomerService (customerDAO, restaurantDAO);
+    RestaurateurService (customerDAO, restaurantDAO);
+    Login (customerDAO, restaurateurDAO, system_administratorDAO);
+
 }
