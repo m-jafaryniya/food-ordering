@@ -8,19 +8,19 @@ class CartItem {
     public:
     CartItem();
     virtual ~CartItem();
-    CartItem(int itemId, const std::string& itemType, int quantity);
+    CartItem(int itemId, int quantity, double unitprice);
     int get_itemId() const;
-    std::string get_itemType() const;
     int get_quantity() const;
+    double get_unitPrice() const;
     void set_itemId(int id);
-    void set_itemType(const std::string& itemType);
     void set_quantity(int quantity);
+    void set_unitPrice(double unitPrice);
     double get_totalPrice() const;
 
     private:
     int itemId;
-    std::string itemType;
     int quantity;
+    double unitPrice;
 
 };
 
