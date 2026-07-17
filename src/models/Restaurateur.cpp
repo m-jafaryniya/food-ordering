@@ -11,15 +11,18 @@ Restaurateur::Restaurateur(const std::string &phoneNumber, const std::string &pa
 
 Restaurateur::~Restaurateur() {}
 
-void Restaurateur::add_restaurant(const Restaurant *restaurant) {
+void Restaurateur::addRestaurant(const Restaurant *restaurant) {
     restaurants.push_back(restaurant);
 }
 
-void Restaurateur::remove_restaurant(const Restaurant *restaurant) {
+void Restaurateur::removeRestaurant(const Restaurant *restaurant) {
 
 }
 
+std::vector<Restaurant*>& Restaurateur::getRestaurants() {
+    return restaurants;
+}
 
-void Restaurateur::show_restaurants() const {
+void Restaurateur::showRestaurants() const {
 
 }
