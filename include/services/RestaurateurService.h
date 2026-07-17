@@ -10,7 +10,7 @@
 
 class RestaurateurService {
 public:
-    RestaurateurService();
+    RestaurateurService(Database* database);
     bool insertRestaurant (const Restaurateur& owner, const std::string name);
     bool editRestaurant (const Restaurant& restaurant);
     bool deleteRestaurant (int restaurantId);

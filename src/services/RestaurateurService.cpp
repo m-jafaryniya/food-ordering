@@ -1,9 +1,8 @@
 
 #include "services/RestaurateurService.h"
 
-RestaurateurService::RestaurateurService() {
-
-}
+RestaurateurService::RestaurateurService(Database* database)
+    :menuDAO(database),restaurantDAO(database),orderDAO(database){}
 
 bool RestaurateurService::insertRestaurant(const Restaurateur &owner, const std::string name) {
     Restaurant restaurant;
@@ -20,14 +19,16 @@ bool RestaurateurService::editRestaurant(const Restaurant &restaurant) {
 }
 
 bool RestaurateurService::deleteRestaurant(int restaurantId) {
-    menuDAO.deleteDrink();
-    menuDAO.deleteFood();
-    restaurantDAO.deleteRestaurant(restaurantId);
+    menuDAO.deleteDrink(restaurantId);
+    menuDAO.deleteFood(restaurantId);
+
+    Restaurant restaurant;
+    restaurant.setId(restaurantId);
+    restaurantDAO.deleteRestaurant(restaurant);
     return true;
 }
 
 bool RestaurateurService::changeRestaurantStatus(int restaurantId, bool isOpen) {
-    restaurantDAO.changeRestaurantStatus(restaurantId, isOpen);
     return true;
 }
 
@@ -36,34 +37,27 @@ Restaurant RestaurateurService::getRestaurant(int restaurantId) {
 }
 
 std::vector<Restaurant> RestaurateurService::getRestaurants(int ownerId) {
-    return restaurantDAO.getRestaurantsByOwner();
+    std::vector<Restaurant> restaurants;
+    return restaurants;
 }
 
 bool RestaurateurService::addMenuItem(const Menu &item) {
-    menuDAO.addFood();
-    menuDAO.addDrink();
     return true;
 }
 
 bool RestaurateurService::editMenuItem(const Menu &item) {
-    menuDAO.updateDrink();
-    menuDAO.updateFood();
     return true;
 }
 
 bool RestaurateurService::deleteMenuItem(const Menu &item) {
-    menuDAO.deleteDrink();
-    menuDAO.deleteFood();
     return true;
 }
 
 bool RestaurateurService::changeMenuItemPrice(int itemId, double newPrice) {
-    menuDAO.changePrice(itemId, newPrice);
     return true;
 }
 
 bool RestaurateurService::changeMenuItemAvailability(int itemId, bool available) {
-    menuDAO.changeItemAvailability(itemId, available);
     return true;
 }
 
@@ -72,7 +66,8 @@ std::vector<Order> RestaurateurService::getRestaurantOrders(int restaurantId) {
 }
 
 std::vector<Order> RestaurateurService::getPendingOrders(int restaurantId) {
-    return orderDAO.getOrderByStatus(restaurantId, OrderStatus::pending);
+    std::vector<Order> orders;
+    return orders;
 }
 
 bool RestaurateurService::changeOrderStatus(int orderId, OrderStatus status) {
