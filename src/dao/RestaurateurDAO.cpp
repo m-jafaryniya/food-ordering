@@ -8,7 +8,7 @@ RestaurateurDAO::RestaurateurDAO(Database *database) {
 }
 
 bool RestaurateurDAO::insertRestaurateur(const Restaurateur &restaurateur) {
-    std::string sql = "INSERT INTO RESTAURATEUR ( PHONE, PASSWORD, USERNAME, ID) VALUES (?,?,?);" ;
+    std::string sql = "INSERT INTO RESTAURATEUR ( PHONE, PASSWORD, USERNAME, ID) VALUES (?,?,?,?);" ;
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(database->getConnection(),sql.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
         return false;
