@@ -13,7 +13,7 @@
 
 class CustomerService {
     public:
-    CustomerService();
+    CustomerService(Database* database);
     std::vector<Restaurant> getAllRstaurants();
     std::vector<Menu*> getRestaurantMenu(int restaurantId);
     bool addToCart(int restaurantId, int itemId, int quantity);

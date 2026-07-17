@@ -1,8 +1,8 @@
 
 #include "services/CustomerService.h"
 
-CustomerService::CustomerService() {
-}
+CustomerService::CustomerService(Database* database)
+    : customerDAO(database), restaurantDAO(database), menuDAO(database), orderDAO(database){}
 
 std::vector<Restaurant> CustomerService::getAllRstaurants() {
     return restaurantDAO.getRestaurants();
@@ -13,25 +13,25 @@ std::vector<Menu*> CustomerService::getRestaurantMenu(int restaurantId) {
 }
 
 bool CustomerService::addToCart(int restaurantId, int itemId, int quantity) {
-    if (quantity <= 0) return false;
-    Menu* menu = menuDAO.getFoodById(itemId);
-    if (menu == nullptr) {
-        menu = menuDAO.getDrinkById(itemId);
-        if (menu == nullptr) {
-            return false;
-        }
+    auto foodOpt = menuDAO.getFoodById(itemId);
+    auto drinkOpt = menuDAO.getDrinkById(itemId);
+
+    double price = 0.0;
+    bool found = false;
+
+    if (foodOpt.has_value()) {
+        price = foodOpt->get_BasePrice();
+        found = true;
     }
-    if (cart.get_items().empty()) {
-        cart.
+    else if (drinkOpt.has_value()) {
+        price = drinkOpt->get_BasePrice();
+        found = true;
     }
-    if (cart.get_restaurantId() != restaurantId) {
+    if (!found) {
+        std::cout << "Item not found!" << std::endl;
         return false;
     }
-    CartItem item;
-    item.set_itemId(itemId);
-    item.set_quantity(quantity);
-    item.set_unitPrice(menu->get_BasePrice());
-    cart.addItem(item);
+    cart.addItem(itemId, price, quantity);
     return true;
 }
 
@@ -61,7 +61,7 @@ bool CustomerService::placeOrder(int customerId, int restaurantId) {
     }
     double cost = calculateCost();
     Order order;
-    order.set_orderId(orderDAO);
+    order.set_orderId(1001);
     order.set_customerId(customerId);
     order.set_restaurantId(restaurantId);
     order.set_totalPrice(cost);
