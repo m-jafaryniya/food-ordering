@@ -12,7 +12,7 @@ bool SystemAdministratorService::addRestaurant(const Restaurant &restaurant) {
 bool SystemAdministratorService::activeRestaurant(int restaurantId) {
     Restaurant restaurant;
     restaurantDAO.getRestaurantById(restaurantId);
-    restaurant.set_active(true);
+    restaurant.setActive(true);
     restaurantDAO.updateRestaurant(restaurant);
     return true;
 }
@@ -20,7 +20,7 @@ bool SystemAdministratorService::activeRestaurant(int restaurantId) {
 bool SystemAdministratorService::deActiveRestaurant(int restaurantId) {
     Restaurant restaurant;
     restaurantDAO.getRestaurantById(restaurantId);
-    restaurant.set_active(false);
+    restaurant.setActive(false);
     restaurantDAO.updateRestaurant(restaurant);
     return true;
 }

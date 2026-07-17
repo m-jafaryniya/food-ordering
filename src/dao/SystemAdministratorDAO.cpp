@@ -9,10 +9,10 @@ SystemAdministratorDAO::SystemAdministratorDAO(Database* database) {
 
 void SystemAdministratorDAO::insertSystemAdministrator(const SystemAdministrator& systemAdministrator) {
     std::string sql = "INSERT INTO SYSTEM_ADMINISTRATOR ( PHONE, PASSWORD, USERNAME, ID) VALUES ('" +
-    systemAdministrator.get_phoneNumber() + "', '" +
-        systemAdministrator.get_password() + "', '" +
-            systemAdministrator.get_userName() + "', '" +
-                std::to_string(systemAdministrator.get_id()) + "');";
+    systemAdministrator.getPhoneNumber() + "', '" +
+        systemAdministrator.getPassword() + "', '" +
+            systemAdministrator.getUserName() + "', '" +
+                std::to_string(systemAdministrator.getId()) + "');";
     char* messageError;
     int exit = sqlite3_exec(database->getConnection(), sql.c_str(), nullptr, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -42,10 +42,10 @@ bool SystemAdministratorDAO::existByPhone(const std::string &phone) {
 
 static int callbackSystemAdministratorByPhone(void* data, int argc, char** argv, char** azColName) {
     SystemAdministrator* systemAdministrator = static_cast<SystemAdministrator*>(data);
-    systemAdministrator->set_phoneNumber(argv[0]);
-    systemAdministrator->set_password(argv[1]);
-    systemAdministrator->set_userName(argv[2]);
-    systemAdministrator->set_id(std::atoi(argv[3]));
+    systemAdministrator->setPhoneNumber(argv[0]);
+    systemAdministrator->setPassword(argv[1]);
+    systemAdministrator->setUserName(argv[2]);
+    systemAdministrator->setId(std::atoi(argv[3]));
     return 0;
 }
 
