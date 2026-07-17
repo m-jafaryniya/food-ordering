@@ -18,8 +18,6 @@
 void clearScreen() {
     #ifdef _WIN32
         system("cls");
-    #else
-        system("clear");
     #endif
 }
 
@@ -104,7 +102,7 @@ int getMenuChoice(int min, int max) {
 void showCustomerMenu(CustomerService& service, Customer* customer) {
     int choice;
     do {
-        clearScreen();
+        //clearScreen();
         std::cout << "===== CUSTOMER MENU =====" << std::endl;
         std::cout << "Welcome, " << customer->getUserName() << "!" << std::endl;
         std::cout << "Your Wallet: " << customer->getWallet() << std::endl;
@@ -123,7 +121,7 @@ void showCustomerMenu(CustomerService& service, Customer* customer) {
 
         switch (choice) {
             case 1: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== ALL RESTAURANTS =====" << std::endl;
                 std::vector<Restaurant> restaurants = service.getAllRstaurants();
                 if (restaurants.empty()) {
@@ -142,7 +140,7 @@ void showCustomerMenu(CustomerService& service, Customer* customer) {
                 break;
             }
             case 2: {
-                clearScreen();
+                //clearScreen();
                 int restaurantId = getValidatedInt("Enter Restaurant ID: ",10000,1000000);
 
                 std::vector<Menu*> menu = service.getRestaurantMenu(restaurantId);
@@ -169,7 +167,7 @@ void showCustomerMenu(CustomerService& service, Customer* customer) {
                 break;
             }
             case 3: {
-                clearScreen();
+                //clearScreen();
                 Cart cart = service.getCart();
                 std::cout << "===== YOUR CART =====" << std::endl;
                 if (cart.get_items().empty()) {
@@ -190,7 +188,7 @@ void showCustomerMenu(CustomerService& service, Customer* customer) {
                 break;
             }
             case 4: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== ADD ITEM TO CART =====" << std::endl;
                 int restaurantId = getValidatedInt("Enter Restaurant ID: ",10000,1000000);
                 int itemId = getValidatedInt("Enter Item ID: ");
@@ -205,7 +203,7 @@ void showCustomerMenu(CustomerService& service, Customer* customer) {
                 break;
             }
             case 5: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== REMOVE ITEM FROM CART =====" << std::endl;
                 int itemId = getValidatedInt("Enter Item ID to remove: ");
                 service.removeFromCart(itemId);
@@ -221,7 +219,7 @@ void showCustomerMenu(CustomerService& service, Customer* customer) {
                 break;
             }
             case 7: {
-                clearScreen();
+                //clearScreen();
                 Cart cart = service.getCart();
                 if (cart.get_items().empty()) {
                     std::cout << "Cart is empty! Cannot place order." << std::endl;
@@ -250,7 +248,7 @@ void showCustomerMenu(CustomerService& service, Customer* customer) {
                 break;
             }
             case 8: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== ORDER HISTORY =====" << std::endl;
                 std::vector<Order> orders = service.getOrders(customer->getId());
                 if (orders.empty()) {
@@ -290,7 +288,7 @@ void showCustomerMenu(CustomerService& service, Customer* customer) {
 void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurateur) {
     int choice;
     do {
-        clearScreen();
+        //clearScreen();
         std::cout << "===== RESTAURATEUR MENU =====" << std::endl;
         std::cout << "Welcome, " << restaurateur->getUserName() << "!" << std::endl;
         std::cout << "----------------------------------------" << std::endl;
@@ -310,7 +308,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
 
         switch (choice) {
             case 1: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== MY RESTAURANTS =====" << std::endl;
                 std::vector<Restaurant> restaurants = service.getRestaurants(restaurateur->getId());
                 if (restaurants.empty()) {
@@ -328,7 +326,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 2: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== ADD NEW RESTAURANT =====" << std::endl;
                 std::cin.ignore();
                 std::string name = getValidatedString("Restaurant Name: ");
@@ -353,7 +351,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 3: {
-                clearScreen();
+                //clearScreen();
                 int restaurantId = getValidatedInt("Enter Restaurant ID to edit: ",10000,1000000);
 
                 Restaurant restaurant = service.getRestaurant(restaurantId);
@@ -381,7 +379,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 4: {
-                clearScreen();
+                //clearScreen();
                 int restaurantId = getValidatedInt("Enter Restaurant ID: ",10000,1000000);
                 std::cout << "1. Open Restaurant" << std::endl;
                 std::cout << "2. Close Restaurant" << std::endl;
@@ -397,7 +395,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 5: {
-                clearScreen();
+                //clearScreen();
                 int restaurantId = getValidatedInt("Enter Restaurant ID: ");
 
                 std::vector<Menu*> menu = service.getMenuItems(restaurantId);
@@ -418,7 +416,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 6: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== ADD MENU ITEM =====" << std::endl;
                 int restaurantId = getValidatedInt("Enter Restaurant ID: ");
                 std::cout << "1. Food" << std::endl;
@@ -451,7 +449,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 7: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== EDIT MENU ITEM =====" << std::endl;
                 int itemId = getValidatedInt("Enter Item ID to edit: ");
 
@@ -461,7 +459,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 8: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== DELETE MENU ITEM =====" << std::endl;
                 int itemId = getValidatedInt("Enter Item ID to delete: ");
 
@@ -477,7 +475,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 9: {
-                clearScreen();
+                //clearScreen();
                 int restaurantId = getValidatedInt("Enter Restaurant ID: ",10000,1000000);
 
                 std::vector<Order> orders = service.getRestaurantOrders(restaurantId);
@@ -506,7 +504,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
                 break;
             }
             case 10: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== UPDATE ORDER STATUS =====" << std::endl;
                 int orderId = getValidatedInt("Enter Order ID: ");
                 std::cout << "1. Pending" << std::endl;
@@ -548,7 +546,7 @@ void showRestaurateurMenu(RestaurateurService& service, Restaurateur* restaurate
 void showAdminMenu(SystemAdministratorService& service) {
     int choice;
     do {
-        clearScreen();
+        //clearScreen();
         std::cout << "===== ADMIN MENU =====" << std::endl;
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "1. View All Restaurants" << std::endl;
@@ -561,7 +559,7 @@ void showAdminMenu(SystemAdministratorService& service) {
 
         switch (choice) {
             case 1: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== ALL RESTAURANTS =====" << std::endl;
                 std::vector<Restaurant> restaurants = service.getRestaurants();
                 if (restaurants.empty()) {
@@ -579,7 +577,7 @@ void showAdminMenu(SystemAdministratorService& service) {
                 break;
             }
             case 2: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== ADD NEW RESTAURANT =====" << std::endl;
                 std::cin.ignore();
                 std::string name = getValidatedString("Restaurant Name: ");
@@ -605,7 +603,7 @@ void showAdminMenu(SystemAdministratorService& service) {
                 break;
             }
             case 3: {
-                clearScreen();
+                //clearScreen();
                 std::cout << "===== ACTIVATE/DEACTIVATE RESTAURANT =====" << std::endl;
                 int restaurantId = getValidatedInt("Enter Restaurant ID: ",10000,1000000);
                 std::cout << "1. Activate" << std::endl;
@@ -628,7 +626,7 @@ void showAdminMenu(SystemAdministratorService& service) {
                 break;
             }
             case 4: {
-                clearScreen();
+                //clearScreen();
                 service.systemReport();
                 waitForEnter();
                 break;
