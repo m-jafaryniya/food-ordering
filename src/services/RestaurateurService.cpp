@@ -39,8 +39,15 @@ Restaurant RestaurateurService::getRestaurant(int restaurantId) {
 }
 
 std::vector<Restaurant> RestaurateurService::getRestaurants(int ownerId) {
-    std::vector<Restaurant> restaurants;
-    return restaurants;
+    std::vector<Restaurant> allRestaurants = restaurantDAO.getRestaurants();
+    std::vector<Restaurant> ownerRestaurants;
+
+    for (const Restaurant& restaurant : allRestaurants) {
+        if (restaurant.getOwnerId() == ownerId) {
+            ownerRestaurants.push_back(restaurant);
+        }
+    }
+    return ownerRestaurants;
 }
 
 bool RestaurateurService::addMenuItem(int restaurantId, const Menu &item) {
