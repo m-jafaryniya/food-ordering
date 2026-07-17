@@ -7,4 +7,3 @@ SystemAdministrator::SystemAdministrator(const std::string &phoneNumber, const s
     :User(phoneNumber, password, userName)
 {}
 
-SystemAdministrator::~SystemAdministrator() {}

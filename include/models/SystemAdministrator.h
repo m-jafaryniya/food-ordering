@@ -6,6 +6,7 @@
 class SystemAdministrator : public User {
     public:
     SystemAdministrator();
+    ~SystemAdministrator() override = default;
     SystemAdministrator(const std::string &phoneNumber, const std::string &password, const std::string &userName);
 };
 
