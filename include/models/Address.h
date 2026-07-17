@@ -12,10 +12,10 @@ public:
     void set_streetName(const std::string &streetName);
     void set_alleyName(const std::string &alleyName);
     void set_block(int block);
-    std::string get_cityName();
-    std::string get_streetName();
-    std::string get_alleyName();
-    int get_block();
+    std::string get_cityName() const;
+    std::string get_streetName() const;
+    std::string get_alleyName() const;
+    int get_block() const;
 
 private:
     std::string cityName;
