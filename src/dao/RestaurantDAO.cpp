@@ -26,14 +26,10 @@ void RestaurantDAO::insertRestaurant(const Restaurant& restaurant) {
     sqlite3_bind_text(stmt,10,restaurant.getInformation().c_str(),-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,11,restaurant.getOwnerId());
 
-    char* messageError;
-    int exit = sqlite3_exec(database->getConnection(), sql.c_str(), NULL, 0, &messageError);
-    if (exit != SQLITE_OK) {
-        std::cerr << "Error Insert : " << messageError << std::endl;
-        sqlite3_free(messageError);
-    } else {
-        std::cout << "Records created successfully!" << std::endl;
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        std::cout << "Error insert : " << sqlite3_errmsg(database->getConnection()) << std::endl;
     }
+    sqlite3_finalize(stmt);
 }
 
 void RestaurantDAO::deleteRestaurant(const Restaurant& restaurant) {
