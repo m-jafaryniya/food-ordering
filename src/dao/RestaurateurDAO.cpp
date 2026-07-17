@@ -7,20 +7,33 @@ RestaurateurDAO::RestaurateurDAO(Database *database) {
     this->database = database;
 }
 
-void RestaurateurDAO::insertRestaurateur(const Restaurateur &restaurateur) {
-    std::string sql = "INSERT INTO RESTAURATEUR ( PHONE, PASSWORD, USERNAME, ID) VALUES ('" +
-    restaurateur.getPhoneNumber() + "', '" +
-        restaurateur.getPassword() + "', '" +
-            restaurateur.getUserName() + "', '" +
-                std::to_string(restaurateur.getId()) + "');";
-    char* messageError;
-    int exit = sqlite3_exec(database->getConnection(), sql.c_str(), NULL, 0, &messageError);
-    if (exit != SQLITE_OK) {
-        std::cerr << "Error Insert : " << messageError << std::endl;
-        sqlite3_free(messageError);
-    } else {
-        std::cout << "Records created successfully!" << std::endl;
+bool RestaurateurDAO::insertRestaurateur(const Restaurateur &restaurateur) {
+    std::string sql = "INSERT INTO RESTAURATEUR ( PHONE, PASSWORD, USERNAME, ID) VALUES (?,?,?);" ;
+    sqlite3_stmt *stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
+        return false;
     }
+    sqlite3_bind_text(stmt,1,restaurateur.getPhoneNumber().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,2,restaurateur.getPassword().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,3,restaurateur.getUserName().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,4,restaurateur.getId());
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
+}
+
+bool RestaurateurDAO::deleteRestaurateur(const Restaurateur &restaurateur) {
+    std::string sql_delete = "DELETE FROM RESTAURATEUR WHERE ID =?;";
+    sqlite3_stmt *stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql_delete.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
+        return false;
+    }
+    sqlite3_bind_int(stmt,1,restaurateur.getId());
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
 }
 
 static int callbackExists(void* data, int argc, char** argv, char** azColName) {

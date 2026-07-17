@@ -8,8 +8,8 @@
 class RestaurateurDAO {
     public:
     RestaurateurDAO(Database* database);
-    void insertRestaurateur(const Restaurateur& restaurateur);
-    void deleteRestaurateur();
+    bool insertRestaurateur(const Restaurateur& restaurateur);
+    bool deleteRestaurateur(const Restaurateur& restaurateur);
     bool existByPhone(const std::string& phone);
     Restaurateur getRestaurateurByPhone(const std::string& phone);
     bool checkPassword(const std::string& phone, const std::string& password);
