@@ -154,6 +154,7 @@ Order OrderDAO::getOrderById(int id) {
     std::string sql = "SELECT * FROM ORDERS WHERE ITEM_ID=? ;";
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(database->getConnection(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cout << "Error getOrderById : " << sqlite3_errmsg(database->getConnection()) << std::endl;
         return order;
     }
     sqlite3_bind_int(stmt,1,id);
@@ -164,6 +165,11 @@ Order OrderDAO::getOrderById(int id) {
         order.set_totalPrice(sqlite3_column_double(stmt,3));
         std::string status = reinterpret_cast<const char*>(sqlite3_column_text(stmt,4));
         order.set_status(stringToStatus(status));
+
+        std::vector<CartItem> items = getOrderItems(id);
+        for (const auto& item : items) {
+            order.get_cartItems().push_back(item);
+        }
     }
     sqlite3_finalize(stmt);
     return order;
