@@ -9,9 +9,7 @@ Restaurateur::Restaurateur(const std::string &phoneNumber, const std::string &pa
 :User(phoneNumber, password, userName)
 {}
 
-Restaurateur::~Restaurateur() {}
-
-void Restaurateur::addRestaurant(const Restaurant *restaurant) {
+void Restaurateur::addRestaurant(Restaurant *restaurant) {
     restaurants.push_back(restaurant);
 }
 

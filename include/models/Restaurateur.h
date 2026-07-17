@@ -10,7 +10,7 @@ class Restaurateur : public User {
     Restaurateur();
     ~Restaurateur() override = default;
     Restaurateur(const std::string &phoneNumber, const std::string &password, const std::string &userName);
-    void addRestaurant(const Restaurant* restaurant);
+    void addRestaurant(Restaurant* restaurant);
     void removeRestaurant(const Restaurant* restaurant);
     std::vector<Restaurant*>& getRestaurants();
     void showRestaurants() const;
