@@ -1,5 +1,6 @@
 
 #include "models/Restaurant.h"
+#include "models/Menu.h"
 #include "models/IdMaker.h"
 
 Restaurant::Restaurant() {}
@@ -7,90 +8,90 @@ Restaurant::Restaurant() {}
 Restaurant::Restaurant(const std::string& name,
     const Address& address, bool active,
     int OperationTime, const std::string& phone, const std::string& information) {
-    ID = IdMaker::get_RestaurantID();
+    Id = IdMaker::getRestaurantID();
     this->name = name;
     this->address = address;
     this->active = active;
-    this->OperationTime = OperationTime;
+    this->operationTime = OperationTime;
     this->phone = phone;
     this->information = information;
 }
 
 Restaurant::~Restaurant(){}
 
-int Restaurant::get_ID() const {
-    return ID;
+int Restaurant::getID() const {
+    return Id;
 }
 
-std::string Restaurant::get_name() const {
+std::string Restaurant::getName() const {
     return name;
 }
 
-Address Restaurant::get_address() const {
+const Address& Restaurant::getAddress() const {
     return address;
 }
 
-bool Restaurant::get_active() const {
+bool Restaurant::getActive() const {
     return active;
 }
 
-int Restaurant::get_operationTime() const {
-    return OperationTime;
+int Restaurant::getOperationTime() const {
+    return operationTime;
 }
 
-std::string Restaurant::get_phone() const
+std::string Restaurant::getPhone() const
 {
     return phone;
 }
 
-std::string Restaurant::get_information() const {
+std::string Restaurant::getInformation() const {
     return information;
 }
 
-int Restaurant::get_ownerId() const {
+int Restaurant::getOwnerId() const {
     return ownerId;
 }
 
-void Restaurant::set_id(int id) {
-    this->ID = id;
+void Restaurant::setId(int id) {
+    this->Id = id;
 }
 
-void Restaurant::set_name(const std::string& name) {
+void Restaurant::setName(const std::string& name) {
     this->name = name;
 }
 
-void Restaurant::set_address(const Address& address) {
+void Restaurant::setAddress(const Address& address) {
     this->address = address;
 }
 
-void Restaurant::set_active(const bool active) {
+void Restaurant::setActive(bool active) {
     this->active = active;
 }
 
-void Restaurant::set_operationTime(const int operationTime) {
-    this->OperationTime = operationTime;
+void Restaurant::setOperationTime(int operationTime) {
+    this->operationTime = operationTime;
 }
 
-void Restaurant::set_phone(const std::string& phone) {
+void Restaurant::setPhone(const std::string& phone) {
     this-> phone = phone;
 }
 
-void Restaurant::set_information(const std::string& information) {
+void Restaurant::setInformation(const std::string& information) {
     this->information = information;
 }
 
-void Restaurant::set_ownerId(const int ownerId) {
+void Restaurant::setOwnerId(const int ownerId) {
     this->ownerId = ownerId;
 }
 
 void Restaurant::addMenuItem(Menu *menu) {
-    MenuList.push_back(menu);
+    menuList.push_back(menu);
 }
 
-void Restaurant::removeMenuItem(int id) {
+void Restaurant::removeMenuItemById(int id) {
 
 }
 
 std::vector<Menu *>& Restaurant::getMenuList() {
-    return MenuList;
+    return menuList;
 }
