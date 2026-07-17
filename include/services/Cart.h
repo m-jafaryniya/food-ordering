@@ -14,7 +14,7 @@ class Cart {
     int get_customerId() const;
 
     std::vector<CartItem> get_items() const;
-    void addItem(int itemId, const std::string& itemType, int quantity);
+    void addItem(int itemId, double unitPrice, int quantity);
     void removeItem(int itemId);
     void clear();
     double get_totalPrice() const;

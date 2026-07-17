@@ -9,6 +9,10 @@ Cart::Cart(int customerId) {
     this->customerId = customerId;
 }
 
+Cart::~Cart() {
+
+}
+
 int Cart::get_customerId() const {
     return customerId;
 }
@@ -17,13 +21,13 @@ std::vector<CartItem> Cart::get_items() const {
     return items;
 }
 
-void Cart::addItem(int itemId, const std::string& itemType, int quantity) {
-    items.push_back(CartItem(itemId, itemType, quantity));
+void Cart::addItem(int itemId, double unitPrice, int quantity) {
+    items.push_back(CartItem(itemId, quantity, unitPrice));
 }
 
 void Cart::removeItem(int itemId) {
     for (auto it = items.begin(); it != items.end(); it++) {
-        if (it->get_itemId()->get_ItemId() == itemId) {
+        if (it->get_itemId() == itemId) {
             items.erase(it);
             break;
         }
