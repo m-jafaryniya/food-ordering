@@ -18,12 +18,12 @@ public:
     Restaurant getRestaurant (int restaurantId);
     std::vector<Restaurant> getRestaurants(int ownerId);
 
-    bool addMenuItem(const Menu& item);
+    bool addMenuItem(int restaurantId, const Menu& item);
     bool editMenuItem(const Menu& item);
     bool deleteMenuItem(const Menu& item);
     bool changeMenuItemPrice(int itemId, double newPrice);
     bool changeMenuItemAvailability(int itemId, bool available);
-    std::vector<Menu> getMenuItems(int restaurantId);
+    std::vector<Menu *> getMenuItems(int restaurantId);
 
     std::vector<Order> getRestaurantOrders(int restaurantId);
     std::vector<Order> getPendingOrders(int restaurantId);

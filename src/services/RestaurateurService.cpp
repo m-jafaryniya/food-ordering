@@ -29,7 +29,9 @@ bool RestaurateurService::deleteRestaurant(int restaurantId) {
 }
 
 bool RestaurateurService::changeRestaurantStatus(int restaurantId, bool isOpen) {
-    return true;
+    Restaurant restaurant = restaurantDAO.getRestaurantById(restaurantId);
+    restaurant.setActive(isOpen);
+    return restaurantDAO.updateRestaurant(restaurant);
 }
 
 Restaurant RestaurateurService::getRestaurant(int restaurantId) {
@@ -41,33 +43,92 @@ std::vector<Restaurant> RestaurateurService::getRestaurants(int ownerId) {
     return restaurants;
 }
 
-bool RestaurateurService::addMenuItem(const Menu &item) {
-    return true;
+bool RestaurateurService::addMenuItem(int restaurantId, const Menu &item) {
+    if (dynamic_cast<const Food*>(&item)) {
+        const Food *food = dynamic_cast<const Food*>(&item);
+        return menuDAO.addFood(restaurantId, *food);
+    }
+    if (dynamic_cast<const Drink*>(&item)) {
+        const Drink *drink = dynamic_cast<const Drink*>(&item);
+        return menuDAO.addDrink(restaurantId, *drink);
+    }
+    return false;
 }
 
 bool RestaurateurService::editMenuItem(const Menu &item) {
-    return true;
+    if (dynamic_cast<const Food*>(&item)) {
+        const Food *food = dynamic_cast<const Food*>(&item);
+        return menuDAO.updateFood(*food);
+    }
+    if (dynamic_cast<const Drink*>(&item)) {
+        const Drink *drink = dynamic_cast<const Drink*>(&item);
+        return menuDAO.updateDrink(*drink);
+    }
+    return false;
 }
 
 bool RestaurateurService::deleteMenuItem(const Menu &item) {
-    return true;
+    if (dynamic_cast<const Food*>(&item)) {
+        return menuDAO.deleteFood(item.get_ItemId());
+    }
+    if (dynamic_cast<const Drink*>(&item)) {
+        return menuDAO.deleteDrink(item.get_ItemId());
+    }
+    return false;
 }
 
 bool RestaurateurService::changeMenuItemPrice(int itemId, double newPrice) {
-    return true;
+    auto foodOpt = menuDAO.getFoodById(itemId);
+    if (foodOpt.has_value()) {
+        Food food = foodOpt.value();
+        food.set_BasePrice(newPrice);
+        return menuDAO.updateFood(food);
+    }
+
+    auto DrinkOpt = menuDAO.getDrinkById(itemId);
+    if (DrinkOpt.has_value()) {
+        Drink drink = DrinkOpt.value();
+        drink.set_BasePrice(newPrice);
+        return menuDAO.updateDrink(drink);
+    }
+    return false;
 }
 
 bool RestaurateurService::changeMenuItemAvailability(int itemId, bool available) {
-    return true;
+    auto foodOpt = menuDAO.getFoodById(itemId);
+    if (foodOpt.has_value()) {
+        Food food = foodOpt.value();
+        food.set_available(available);
+        return menuDAO.updateFood(food);
+    }
+
+    auto DrinkOpt = menuDAO.getDrinkById(itemId);
+    if (DrinkOpt.has_value()) {
+        Drink drink = DrinkOpt.value();
+        drink.set_available(available);
+        return menuDAO.updateDrink(drink);
+    }
+    return false;
+}
+
+std::vector<Menu *> RestaurateurService::getMenuItems(int restaurantId) {
+    return menuDAO.getRestaurantMenu(restaurantId);
 }
 
 std::vector<Order> RestaurateurService::getRestaurantOrders(int restaurantId) {
-    return orderDAO.getRestaurantOrders(restaurantId);
+    return  orderDAO.getRestaurantOrders(restaurantId);
 }
 
 std::vector<Order> RestaurateurService::getPendingOrders(int restaurantId) {
-    std::vector<Order> orders;
-    return orders;
+    std::vector<Order> allOrders = orderDAO.getRestaurantOrders(restaurantId);
+    std::vector<Order> pendingOrders;
+
+    for (const Order &order : allOrders) {
+        if (order.get_status() == OrderStatus::pending) {
+            pendingOrders.push_back(order);
+        }
+    }
+    return pendingOrders;
 }
 
 bool RestaurateurService::changeOrderStatus(int orderId, OrderStatus status) {
