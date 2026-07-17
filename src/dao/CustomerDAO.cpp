@@ -9,10 +9,10 @@ CustomerDAO::CustomerDAO(Database* database) {
 
 void CustomerDAO::insertCustomer(const Customer& customer) {
     std::string sql = "INSERT INTO CUSTOMER ( PHONE, PASSWORD, USERNAME, ID) VALUES ('" +
-        customer.get_phoneNumber() + "', '" +
-            customer.get_password() + "', '" +
-                customer.get_userName() + "', '" +
-                    std::to_string(customer.get_id()) + "');";
+        customer.getPhoneNumber() + "', '" +
+            customer.getPassword() + "', '" +
+                customer.getUserName() + "', '" +
+                    std::to_string(customer.getId()) + "');";
     char* messageError;
     int exit = sqlite3_exec(database->getConnection(), sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -24,17 +24,17 @@ void CustomerDAO::insertCustomer(const Customer& customer) {
 }
 
 void CustomerDAO::deleteCustomer(const Customer& customer) {
-    std::string sql_delete = "DELETE FROM CUSTOMER WHERE ID =" + std::to_string(customer.get_id()) + ";";
+    std::string sql_delete = "DELETE FROM CUSTOMER WHERE ID =" + std::to_string(customer.getId()) + ";";
     char* messageError;
     sqlite3_exec(database->getConnection(), sql_delete.c_str(), nullptr, 0, &messageError);
 }
 
 bool CustomerDAO::updateCustomer(const Customer& customer) {
     std::string sql_update = "UPDATE CUSTOMER set PHONE='" +
-        customer.get_phoneNumber() + "' " +
-            ",PASSWORD='" + customer.get_password() + "' " +
-                ",USERNAME='" + customer.get_userName() + "' " +
-                    "WHERE ID=" + std::to_string(customer.get_id()) + ";";
+        customer.getPhoneNumber() + "' " +
+            ",PASSWORD='" + customer.getPassword() + "' " +
+                ",USERNAME='" + customer.getUserName() + "' " +
+                    "WHERE ID=" + std::to_string(customer.getId()) + ";";
     char* messageError;
     sqlite3_exec(database->getConnection(), sql_update.c_str(), nullptr, 0, &messageError);
 }
@@ -42,9 +42,9 @@ bool CustomerDAO::updateCustomer(const Customer& customer) {
 static int callbackGetCustomer(void* data, int argc, char** argv, char** azColName) {
     Customer* customer = static_cast<Customer*>(data);
     if (argc>=4) {
-        customer->set_phoneNumber(argv[0]);
-        customer->set_password(argv[1]);
-        customer->set_userName(argv[2]);
+        customer->setPhoneNumber(argv[0]);
+        customer->setPassword(argv[1]);
+        customer->setUserName(argv[2]);
     }
 
     return 0;
@@ -67,10 +67,10 @@ static int callbackGetCustomers(void* data, int argc, char** argv, char** azColN
     std::vector<Customer>* customers = static_cast<std::vector<Customer>*>(data);
     Customer customer;
 
-    customer.set_phoneNumber(argv[0]);
-    customer.set_password(argv[1]);
-    customer.set_userName(argv[2]);
-    customer.set_id(std::atoi(argv[3]));
+    customer.setPhoneNumber(argv[0]);
+    customer.setPassword(argv[1]);
+    customer.setUserName(argv[2]);
+    customer.setId(std::atoi(argv[3]));
     customers->push_back(customer);
     return 0;
 }
@@ -106,10 +106,10 @@ bool CustomerDAO::existByphone(const std::string &phone) {
 
 static int callbackCustomerByPhone(void* data, int argc, char** argv, char** azColName) {
     Customer* customer = static_cast<Customer*>(data);
-    customer->set_phoneNumber(argv[0]);
-    customer->set_password(argv[1]);
-    customer->set_userName(argv[2]);
-    customer->set_id(std::atoi(argv[3]));
+    customer->setPhoneNumber(argv[0]);
+    customer->setPassword(argv[1]);
+    customer->setUserName(argv[2]);
+    customer->setId(std::atoi(argv[3]));
     return 0;
 }
 
