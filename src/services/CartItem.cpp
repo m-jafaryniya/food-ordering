@@ -12,6 +12,10 @@ CartItem::CartItem(int itemId, int quantity, double unitprice) {
     this->unitPrice = unitprice;
 }
 
+CartItem::~CartItem() {
+
+}
+
 int CartItem::get_itemId() const {
     return itemId;
 }
