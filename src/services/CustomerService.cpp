@@ -57,24 +57,35 @@ double CustomerService::calculateCost() {
 
 bool CustomerService::placeOrder(int customerId, int restaurantId) {
     if (cart.get_items().empty()) {
+        std::cout << "Cart is empty!" << std::endl;
         return false;
     }
-    double cost = calculateCost();
+    double cost = cart.get_totalPrice();
+
+    static int orderIdCounter = 100;
     Order order;
-    order.set_orderId(1001);
+    order.set_orderId(orderIdCounter++);
     order.set_customerId(customerId);
     order.set_restaurantId(restaurantId);
     order.set_totalPrice(cost);
     order.set_status(OrderStatus::pending);
 
+    for (const CartItem& item : cart.get_items()) {
+        order.get_cartItems().push_back(item);
+    }
+
     if ( !orderDAO.insertOrder(order) ) {
+        std::cout << "Failed to insert order!" << std::endl;
         return false;
     }
-    if (!orderDAO.deleteOrderItems(order.get_orderId())) {
+    if (!orderDAO.insertOrderItems(order.get_orderId(), cart.get_items())) {
+        std::cout << "Failed to insert order items!" << std::endl;
         orderDAO.deleteOrder(order.get_orderId());
         return false;
     }
     cart.clear();
+    std::cout << "Successfully inserted order!" << std::endl;
+    std::cout << "Order ID: " << order.get_orderId() << std::endl;
     return true;
 }
 
