@@ -89,7 +89,13 @@ void Restaurant::addMenuItem(Menu *menu) {
 }
 
 void Restaurant::removeMenuItemById(int id) {
-
+    for (auto it = menuList.begin(); it != menuList.end(); ++it) {
+        if ((*it)->get_ItemId() == id) {
+            delete *it;
+            menuList.erase(it);
+            return;
+        }
+    }
 }
 
 std::vector<Menu *>& Restaurant::getMenuList() {
