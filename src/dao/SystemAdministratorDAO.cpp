@@ -8,7 +8,7 @@ SystemAdministratorDAO::SystemAdministratorDAO(Database* database) {
 }
 
 bool SystemAdministratorDAO::insertSystemAdministrator(const SystemAdministrator& systemAdministrator) {
-    std::string sql = "INSERT INTO SYSTEM_ADMINISTRATOR ( PHONE, PASSWORD, USERNAME, ID) VALUES (?,?,?);" ;
+    std::string sql = "INSERT INTO SYSTEM_ADMINISTRATOR ( PHONE, PASSWORD, USERNAME, ID) VALUES (?,?,?,?);" ;
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(database->getConnection(),sql.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
         return false;
