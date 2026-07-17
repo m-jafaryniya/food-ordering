@@ -7,36 +7,56 @@ CustomerDAO::CustomerDAO(Database* database) {
     this->database = database;
 }
 
-void CustomerDAO::insertCustomer(const Customer& customer) {
-    std::string sql = "INSERT INTO CUSTOMER ( PHONE, PASSWORD, USERNAME, ID) VALUES ('" +
-        customer.getPhoneNumber() + "', '" +
-            customer.getPassword() + "', '" +
-                customer.getUserName() + "', '" +
-                    std::to_string(customer.getId()) + "');";
-    char* messageError;
-    int exit = sqlite3_exec(database->getConnection(), sql.c_str(), NULL, 0, &messageError);
-    if (exit != SQLITE_OK) {
-        std::cerr << "Error Insert : " << messageError << std::endl;
-        sqlite3_free(messageError);
-    } else {
-        std::cout << "Records created successfully!" << std::endl;
+bool CustomerDAO::insertCustomer(const Customer& customer) {
+    std::string sql = "INSERT INTO CUSTOMER ( PHONE, PASSWORD, USERNAME, ID, WALLET) VALUES (?,?,?,?);" ;
+    sqlite3_stmt *stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
+        return false;
     }
+    sqlite3_bind_text(stmt,1,customer.getPhoneNumber().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,2,customer.getPassword().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,3,customer.getUserName().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,4,customer.getId());
+    sqlite3_bind_double(stmt,5,customer.getWallet());
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
 }
 
-void CustomerDAO::deleteCustomer(const Customer& customer) {
-    std::string sql_delete = "DELETE FROM CUSTOMER WHERE ID =" + std::to_string(customer.getId()) + ";";
-    char* messageError;
-    sqlite3_exec(database->getConnection(), sql_delete.c_str(), nullptr, 0, &messageError);
+bool CustomerDAO::deleteCustomer(const Customer& customer) {
+    std::string sql_delete = "DELETE FROM CUSTOMER WHERE ID =?;";
+    sqlite3_stmt *stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql_delete.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
+        return false;
+    }
+    sqlite3_bind_int(stmt,1,customer.getId());
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
 }
 
 bool CustomerDAO::updateCustomer(const Customer& customer) {
-    std::string sql_update = "UPDATE CUSTOMER set PHONE='" +
-        customer.getPhoneNumber() + "' " +
-            ",PASSWORD='" + customer.getPassword() + "' " +
-                ",USERNAME='" + customer.getUserName() + "' " +
-                    "WHERE ID=" + std::to_string(customer.getId()) + ";";
-    char* messageError;
-    sqlite3_exec(database->getConnection(), sql_update.c_str(), nullptr, 0, &messageError);
+    std::string sql_update = "UPDATE CUSTOMER SET "
+                             "PHONE = ?,"
+                             "PASSWORD = ?,"
+                             "USERNAME = ?,"
+                             "WALLET = ?"
+                             "WHERE ID = ? ;";
+    sqlite3_stmt *stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql_update.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
+        return false;
+    }
+    sqlite3_bind_text(stmt,1,customer.getPhoneNumber().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,2,customer.getPassword().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,3,customer.getUserName().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_double(stmt,4,customer.getWallet());
+    sqlite3_bind_int(stmt,5,customer.getId());
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
 }
 
 static int callbackGetCustomer(void* data, int argc, char** argv, char** azColName) {

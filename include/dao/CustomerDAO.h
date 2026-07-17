@@ -10,8 +10,8 @@
 class CustomerDAO {
     public:
     CustomerDAO(Database* database);
-    void insertCustomer(const Customer& customer);
-    void deleteCustomer(const Customer& customer);
+    bool insertCustomer(const Customer& customer);
+    bool deleteCustomer(const Customer& customer);
     bool updateCustomer(const Customer& customer);
     Customer getCustomerById(int Id);
     std::vector<Customer> getCustomers();
