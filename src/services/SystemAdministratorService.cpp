@@ -15,16 +15,14 @@ bool SystemAdministratorService::activeRestaurant(int restaurantId) {
     Restaurant restaurant;
     restaurantDAO.getRestaurantById(restaurantId);
     restaurant.setActive(true);
-    restaurantDAO.updateRestaurant(restaurant);
-    return true;
+    return restaurantDAO.updateRestaurant(restaurant);
 }
 
 bool SystemAdministratorService::deActiveRestaurant(int restaurantId) {
     Restaurant restaurant;
     restaurantDAO.getRestaurantById(restaurantId);
     restaurant.setActive(false);
-    restaurantDAO.updateRestaurant(restaurant);
-    return true;
+    return restaurantDAO.updateRestaurant(restaurant);
 }
 
 std::vector<Restaurant> SystemAdministratorService::getRestaurants() {
