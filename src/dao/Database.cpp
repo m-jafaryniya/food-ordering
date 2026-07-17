@@ -10,7 +10,9 @@ Database::Database(const std::string &FileName) {
 }
 
 Database::~Database() {
-    sqlite3_close(db);
+    if (db != nullptr) {
+        sqlite3_close(db);
+    }
 }
 
 sqlite3* Database::getConnection() const {
@@ -136,7 +138,7 @@ void Database::createTables() {
     };
 
     const char* cart_itemsTable =
-        "CREATE TABLE IF NOT EXISTS CART_ITEM ("
+        "CREATE TABLE IF NOT EXISTS ORDER_ITEMS ("
         "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
         "ORDER_ID INTEGER NOT NULL,"
         "ITEM_ID INTEGER NOT NULL,"

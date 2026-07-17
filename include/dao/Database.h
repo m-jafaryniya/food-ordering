@@ -9,6 +9,8 @@
 class Database {
     public:
     Database(const std::string& FileName);
+    Database(const Database&) = delete;
+    Database& operator=(const Database&) = delete;
     ~Database();
     sqlite3* getConnection() const;
     void createTables();
