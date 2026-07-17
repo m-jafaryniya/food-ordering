@@ -235,6 +235,48 @@ std::optional<Drink> MenuDAO::getDrinkById(int id) {
 }
 
 std::vector<Menu *> MenuDAO::getRestaurantMenu(int restaurantId) {
-    Restaurant restaurant;
-    return restaurant.getMenuList();
+    std::vector<Menu *> menuItems;
+
+    std::string sqlFood = "SELECT m.ID, m.NAME, m.DESCRIPTION, m.PRICE, m.AVAILABLE, f.COOK_TIME "
+                          "FROM MENU m "
+                          "INNER JOIN FOOD f ON m.ID = f.ID "
+                          "WHERE m.RESTAURANT_ID = ?;";
+    sqlite3_stmt *stmtFood = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(), sqlFood.c_str(), -1, &stmtFood, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmtFood, 1, restaurantId);
+
+        while (sqlite3_step(stmtFood) == SQLITE_ROW) {
+            Food* food = new Food();
+            food->set_ItemId(sqlite3_column_int(stmtFood,0));
+            food->set_ItemName(reinterpret_cast<const char*>(sqlite3_column_text(stmtFood,1)));
+            food->set_ItemDescription(reinterpret_cast<const char*>(sqlite3_column_text(stmtFood,2)));
+            food->set_BasePrice(sqlite3_column_double(stmtFood,3));
+            food->set_available(sqlite3_column_int(stmtFood,4));
+            food->set_cookTime(sqlite3_column_int(stmtFood,5));
+            menuItems.push_back(food);
+        }
+        sqlite3_finalize(stmtFood);
+    }
+
+    std::string sqlDrink = "SELECT m.ID, m.NAME, m.DESCRIPTION, m.PRICE, m.AVAILABLE, d.VOLUME "
+                          "FROM MENU m "
+                          "INNER JOIN DRINK ON m.ID = d.ID "
+                          "WHERE m.RESTAURANT_ID = ?;";
+    sqlite3_stmt *stmtDrink = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(), sqlDrink.c_str(), -1, &stmtDrink, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmtDrink, 1, restaurantId);
+
+        while (sqlite3_step(stmtDrink) == SQLITE_ROW) {
+            Drink* drink = new Drink();
+            drink->set_ItemId(sqlite3_column_int(stmtDrink,0));
+            drink->set_ItemName(reinterpret_cast<const char*>(sqlite3_column_text(stmtDrink,1)));
+            drink->set_ItemDescription(reinterpret_cast<const char*>(sqlite3_column_text(stmtDrink,2)));
+            drink->set_BasePrice(sqlite3_column_double(stmtDrink,3));
+            drink->set_available(sqlite3_column_int(stmtDrink,4));
+            drink->set_volume(sqlite3_column_int(stmtDrink,5));
+            menuItems.push_back(drink);
+        }
+        sqlite3_finalize(stmtDrink);
+    }
+    return menuItems;
 }
