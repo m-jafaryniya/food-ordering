@@ -34,7 +34,16 @@ int SystemAdministratorService::getRestaurantCount() {
 }
 
 int SystemAdministratorService::getRestaurateurCount() {
-    return 0;
+    std::vector<Restaurant> restaurants = restaurantDAO.getRestaurants();
+    std::vector<int> ownerIds;
+
+    for (const Restaurant& r : restaurants) {
+        int ownerId = r.getOwnerId();
+        if (std::find(ownerIds.begin(), ownerIds.end(), ownerId) == ownerIds.end()) {
+            ownerIds.push_back(ownerId);
+        }
+    }
+    return ownerIds.size();
 }
 
 int SystemAdministratorService::getCustomerCount() {
@@ -42,7 +51,7 @@ int SystemAdministratorService::getCustomerCount() {
 }
 
 int SystemAdministratorService::getOrderCount(int restaurantId) {
-    return 0;
+    return orderDAO.getRestaurantOrders(restaurantId).size();
 }
 
 double SystemAdministratorService::getRestaurantTotalSales(int restaurantId) {
@@ -57,5 +66,30 @@ double SystemAdministratorService::getRestaurantTotalSales(int restaurantId) {
 }
 
 double SystemAdministratorService::getTotalSales() {
-    return 0;
+    double total = 0.0;
+    std::vector<Restaurant> restaurants = restaurantDAO.getRestaurants();
+
+    for (const Restaurant& r : restaurants) {
+        total += getRestaurantTotalSales(r.getID());
+    }
+    return total;
+}
+
+void SystemAdministratorService::systemReport() {
+    std::cout << "====SYSTEM REPORT====" << std::endl;
+    std::cout << "Restaurants count : " << getRestaurantCount() << std::endl;
+    std::cout << "Restaurateurs count : " << getRestaurateurCount() << std::endl;
+    std::cout << "Customers count : " << getCustomerCount() << std::endl;
+    std::cout << "Total sales : " << getTotalSales() << std::endl;
+
+    std::cout << "---Restaurants Details---" << std::endl;
+
+    std::vector<Restaurant> restaurants = restaurantDAO.getRestaurants();
+    for (const Restaurant& r : restaurants) {
+        std::cout << "Restaurant name : " << r.getName() << std::endl;
+        std::cout << "Order count : " << getOrderCount(r.getID()) << std::endl;
+        std::cout << "Total sale : " << getRestaurantTotalSales(r.getID()) << std::endl;
+        std::cout << "---------------------------------------------" << std::endl;
+    }
+    std::cout << "============================================" << std::endl;
 }
