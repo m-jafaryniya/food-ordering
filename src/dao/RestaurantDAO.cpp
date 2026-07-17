@@ -38,12 +38,54 @@ void RestaurantDAO::insertRestaurant(const Restaurant& restaurant) {
 
 void RestaurantDAO::deleteRestaurant(const Restaurant& restaurant) {
     std::string sql_delete = "DELETE FROM RESTAURANT WHERE ID =" + std::to_string(restaurant.getID()) +";" ;
-    char* messageError;
-    sqlite3_exec(database->getConnection(), sql_delete.c_str(), NULL, 0, &messageError);
+    sqlite3_stmt* stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql_delete.c_str(),-1, &stmt, nullptr) != SQLITE_OK) {
+        std::cout << "Error Delete : " << sqlite3_errmsg(database->getConnection()) << std::endl;
+    }
+    else {
+        sqlite3_bind_int(stmt,1,restaurant.getID());
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            std::cout << "Error Delete : " << sqlite3_errmsg(database->getConnection()) << std::endl;
+        }
+        sqlite3_finalize(stmt);
+    }
 }
 
 bool RestaurantDAO::updateRestaurant(const Restaurant &restaurant) {
-    return true;
+    std::string sql_update = "UPDATE RESTAURANT SET "
+                             "NAME = ?,"
+                             "CITY = ?,"
+                             "STREET = ?,"
+                             "ALLEY = ?,"
+                             "BLOCK = ?,"
+                             "ACTIVE = ?,"
+                             "OPERATION_TIME = ?,"
+                             "PHONE = ?,"
+                             "INFORMATION = ?,"
+                             "OWNER_ID = ?,"
+                             "WHERE ID = ?;";
+
+    sqlite3_stmt* stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql_update.c_str(),-1, &stmt, NULL) != SQLITE_OK) {
+        std::cout << "Error Insert : " << sqlite3_errcode(database->getConnection()) << std::endl;
+        return false;
+    }
+
+    sqlite3_bind_text(stmt,1,restaurant.getName().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,2,restaurant.getAddress().get_cityName().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,3,restaurant.getAddress().get_streetName().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,4,restaurant.getAddress().get_alleyName().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,5,restaurant.getAddress().get_block());
+    sqlite3_bind_int(stmt,6,restaurant.getActive());
+    sqlite3_bind_int(stmt,7,restaurant.getOperationTime());
+    sqlite3_bind_text(stmt,8,restaurant.getPhone().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,9,restaurant.getInformation().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,10,restaurant.getOwnerId());
+    sqlite3_bind_int(stmt,11,restaurant.getID());
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
 }
 
 Restaurant RestaurantDAO::getRestaurantById(int Id) {
