@@ -4,6 +4,7 @@
 #include "models/Menu.h"
 #include "models/Food.h"
 #include "models/Drink.h"
+#include "models/Restaurant.h"
 
 MenuDAO::MenuDAO(Database* database) {
     this->database = database;
@@ -231,4 +232,9 @@ std::optional<Drink> MenuDAO::getDrinkById(int id) {
     }
     sqlite3_finalize(stmt);
     return std::nullopt;
+}
+
+std::vector<Menu *> MenuDAO::getRestaurantMenu(int restaurantId) {
+    Restaurant restaurant;
+    return restaurant.getMenuList();
 }

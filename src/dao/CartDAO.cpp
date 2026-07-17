@@ -63,8 +63,9 @@ Cart CartDAO::get_cart(int customerId) {
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int itemId=sqlite3_column_int(stmt,1);
         std::string itemType=reinterpret_cast<const char*>(sqlite3_column_text(stmt,2));
-        int quantity=sqlite3_column_int(stmt,3);
-        cart.addItem(itemId,itemType,quantity);
+        double unitPrice=sqlite3_column_double(stmt,3);
+        int quantity=sqlite3_column_int(stmt,4);
+        cart.addItem(itemId,unitPrice,quantity);
     }
     sqlite3_finalize(stmt);
     return cart;

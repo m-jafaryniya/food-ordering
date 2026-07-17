@@ -8,7 +8,7 @@ CustomerDAO::CustomerDAO(Database* database) {
 }
 
 bool CustomerDAO::insertCustomer(const Customer& customer) {
-    std::string sql = "INSERT INTO CUSTOMER ( PHONE, PASSWORD, USERNAME, ID, WALLET) VALUES (?,?,?,?);" ;
+    std::string sql = "INSERT INTO CUSTOMER ( PHONE, PASSWORD, USERNAME, ID, WALLET) VALUES (?,?,?,?,?);" ;
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(database->getConnection(),sql.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
         return false;
@@ -98,7 +98,7 @@ static int callbackGetCustomers(void* data, int argc, char** argv, char** azColN
 std::vector<Customer> CustomerDAO::getCustomers() {
     std::vector<Customer> customers;
     char* messageError = nullptr;
-    std::string sql = "SELECT * FROM CUSTOMERS;";
+    std::string sql = "SELECT * FROM CUSTOMER;";
     int exit = sqlite3_exec(database->getConnection(), sql.c_str(), callbackGetCustomers, &customers, &messageError);
     if (exit != SQLITE_OK) {
         std::cerr << "Error Insert : " << messageError << std::endl;

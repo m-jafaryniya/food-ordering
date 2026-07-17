@@ -42,11 +42,42 @@ void RestaurantDAO::deleteRestaurant(const Restaurant& restaurant) {
     sqlite3_exec(database->getConnection(), sql_delete.c_str(), NULL, 0, &messageError);
 }
 
-bool RestaurantDAO::updateRestaurant(const Restaurant &restaurant) {}
+bool RestaurantDAO::updateRestaurant(const Restaurant &restaurant) {
+    return true;
+}
+
+Restaurant RestaurantDAO::getRestaurantById(int Id) {
+    std::string sql = "SELECT * FROM RESTAURANT WHERE ID = ?;";
+    Restaurant restaurant;
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(database->getConnection(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        throw std::runtime_error(sqlite3_errmsg(database->getConnection()));
+    }
+    sqlite3_bind_int(stmt,1,Id);
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        restaurant.setId(sqlite3_column_int(stmt,0));
+        restaurant.setName(reinterpret_cast<const char*>(sqlite3_column_text(stmt,1)));
+
+        Address address;
+        address.set_cityName(reinterpret_cast<const char*>(sqlite3_column_text(stmt,2)));
+        address.set_streetName(reinterpret_cast<const char*>(sqlite3_column_text(stmt,3)));
+        address.set_alleyName(reinterpret_cast<const char*>(sqlite3_column_text(stmt,4)));
+        address.set_block(sqlite3_column_int(stmt,5));
+
+        restaurant.setAddress(address);
+        restaurant.setActive(sqlite3_column_int(stmt,6));
+        restaurant.setOperationTime(sqlite3_column_int(stmt,7));
+        restaurant.setPhone(reinterpret_cast<const char*>(sqlite3_column_text(stmt,8)));
+        restaurant.setInformation(reinterpret_cast<const char*>(sqlite3_column_text(stmt,9)));
+        restaurant.setOwnerId(sqlite3_column_int(stmt,10));
+    }
+    sqlite3_finalize(stmt);
+    return restaurant;
+}
 
 std::vector<Restaurant> RestaurantDAO::getRestaurants() {
     std::vector<Restaurant> restaurants;
-    std::string sql = "SELECT * FROM RESTAURANTS;";
+    std::string sql = "SELECT * FROM RESTAURANT;";
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(database->getConnection(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         return restaurants;

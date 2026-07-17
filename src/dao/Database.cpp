@@ -117,7 +117,7 @@ void Database::createTables() {
         "CREATE TABLE IF NOT EXISTS CART_ITEMS ("
         "CUSTOMER_ID INTEGER,"
         "ITEM_ID INTEGER,"
-        "ITEM_TYPE TEXT NOT NULL,"
+        "UNIT_PRICE TEXT NOT NULL,"
         "QUANTITY INTEGER"
         ");";
     if (sqlite3_exec(db, cartTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {

@@ -19,9 +19,8 @@ OrderStatus OrderDAO::stringToStatus(const std::string& status) {
     if (status == "Delivered") {
         return OrderStatus::delivered;
     }
-    if (status == "Cancelled") {
-        return OrderStatus::cancelled;
-    }
+
+    return OrderStatus::cancelled;
 }
 
 std::string OrderDAO::statusToString(OrderStatus status) {
