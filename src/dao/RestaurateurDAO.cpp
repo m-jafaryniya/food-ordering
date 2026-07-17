@@ -89,3 +89,27 @@ bool RestaurateurDAO::checkPassword(const std::string &phone, const std::string 
     }
     return dbPassword == password;
 }
+
+static int callbackGetRestaurateurs(void* data, int argc, char** argv, char** azColName) {
+    std::vector<Restaurateur>* restaurateurs = static_cast<std::vector<Restaurateur>*>(data);
+    Restaurateur restaurateur;
+    restaurateur.setPhoneNumber(argv[0] ? argv[0] : "");
+    restaurateur.setPassword(argv[1] ? argv[1] : "");
+    restaurateur.setUserName(argv[2] ? argv[2] : "");
+    restaurateur.setId(std::atoi(argv[3]));
+    restaurateurs->push_back(restaurateur);
+    return 0;
+}
+
+std::vector<Restaurateur> RestaurateurDAO::getRestaurateurs() {
+    std::vector<Restaurateur> restaurateurs;
+    std::string sql = "SELECT PHONE, PASSWORD, USERNAME, ID FROM RESTAURATEUR;";
+
+    char *messageError = nullptr;
+    sqlite3_exec(database->getConnection(), sql.c_str(), callbackGetRestaurateurs, &restaurateurs, &messageError);
+    if (messageError) {
+        std::cerr << "Error : " << messageError << std::endl;
+        sqlite3_free(messageError);
+    }
+    return restaurateurs;
+}

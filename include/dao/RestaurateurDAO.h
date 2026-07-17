@@ -13,6 +13,7 @@ class RestaurateurDAO {
     bool existByPhone(const std::string& phone);
     Restaurateur getRestaurateurByPhone(const std::string& phone);
     bool checkPassword(const std::string& phone, const std::string& password);
+    std::vector<Restaurateur> getRestaurateurs();
 
     private:
     Database* database;
