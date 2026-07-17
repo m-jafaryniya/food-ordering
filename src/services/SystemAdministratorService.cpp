@@ -1,5 +1,7 @@
 
 #include "services/SystemAdministratorService.h"
+#include <vector>
+#include <algorithm>
 
 SystemAdministratorService::SystemAdministratorService(Database* database)
 :restaurantDAO(database),customerDAO(database),restaurateurDAO(database),orderDAO(database){}
