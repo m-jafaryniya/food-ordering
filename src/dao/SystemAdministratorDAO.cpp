@@ -7,20 +7,33 @@ SystemAdministratorDAO::SystemAdministratorDAO(Database* database) {
     this->database = database;
 }
 
-void SystemAdministratorDAO::insertSystemAdministrator(const SystemAdministrator& systemAdministrator) {
-    std::string sql = "INSERT INTO SYSTEM_ADMINISTRATOR ( PHONE, PASSWORD, USERNAME, ID) VALUES ('" +
-    systemAdministrator.getPhoneNumber() + "', '" +
-        systemAdministrator.getPassword() + "', '" +
-            systemAdministrator.getUserName() + "', '" +
-                std::to_string(systemAdministrator.getId()) + "');";
-    char* messageError;
-    int exit = sqlite3_exec(database->getConnection(), sql.c_str(), nullptr, 0, &messageError);
-    if (exit != SQLITE_OK) {
-        std::cerr << "Error Insert : " << messageError << std::endl;
-        sqlite3_free(messageError);
-    } else {
-        std::cout << "Records created successfully!" << std::endl;
+bool SystemAdministratorDAO::insertSystemAdministrator(const SystemAdministrator& systemAdministrator) {
+    std::string sql = "INSERT INTO SYSTEM_ADMINISTRATOR ( PHONE, PASSWORD, USERNAME, ID) VALUES (?,?,?);" ;
+    sqlite3_stmt *stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
+        return false;
     }
+    sqlite3_bind_text(stmt,1,systemAdministrator.getPhoneNumber().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,2,systemAdministrator.getPassword().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,3,systemAdministrator.getUserName().c_str(),-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,4,systemAdministrator.getId());
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
+}
+
+bool SystemAdministratorDAO::deleteSystemAdministrator(const SystemAdministrator& systemAdministrator) {
+    std::string sql_delete = "DELETE FROM SYSTEM_ADMINISTRATOR WHERE ID =?;";
+    sqlite3_stmt *stmt = nullptr;
+    if (sqlite3_prepare_v2(database->getConnection(),sql_delete.c_str(),-1,&stmt,nullptr) != SQLITE_OK) {
+        return false;
+    }
+    sqlite3_bind_int(stmt,1,systemAdministrator.getId());
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
 }
 
 static int callbackExists(void* data, int argc, char** argv, char** azColName) {

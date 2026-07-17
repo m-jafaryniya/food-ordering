@@ -9,8 +9,8 @@
 class SystemAdministratorDAO {
     public:
     SystemAdministratorDAO(Database* database);
-    void insertSystemAdministrator(const SystemAdministrator& systemAdministrator);
-    void deleteSystemAdministrator();
+    bool insertSystemAdministrator(const SystemAdministrator& systemAdministrator);
+    bool deleteSystemAdministrator(const SystemAdministrator& systemAdministrator);
     bool existByPhone(const std::string& phone);
     SystemAdministrator getSystemAdministratorByPhone(const std::string& phone);
     bool checkPassword(const std::string& phone, const std::string& password);
