@@ -9,10 +9,10 @@ RestaurateurDAO::RestaurateurDAO(Database *database) {
 
 void RestaurateurDAO::insertRestaurateur(const Restaurateur &restaurateur) {
     std::string sql = "INSERT INTO RESTAURATEUR ( PHONE, PASSWORD, USERNAME, ID) VALUES ('" +
-    restaurateur.get_phoneNumber() + "', '" +
-        restaurateur.get_password() + "', '" +
-            restaurateur.get_userName() + "', '" +
-                std::to_string(restaurateur.get_id()) + "');";
+    restaurateur.getPhoneNumber() + "', '" +
+        restaurateur.getPassword() + "', '" +
+            restaurateur.getUserName() + "', '" +
+                std::to_string(restaurateur.getId()) + "');";
     char* messageError;
     int exit = sqlite3_exec(database->getConnection(), sql.c_str(), NULL, 0, &messageError);
     if (exit != SQLITE_OK) {
@@ -42,10 +42,10 @@ bool RestaurateurDAO::existByPhone(const std::string &phone) {
 
 static int callbackRestaurateurByPhone(void* data, int argc, char** argv, char** azColName) {
     Restaurateur* restaurateur = static_cast<Restaurateur*>(data);
-    restaurateur->set_phoneNumber(argv[0]);
-    restaurateur->set_password(argv[1]);
-    restaurateur->set_userName(argv[2]);
-    restaurateur->set_id(std::atoi(argv[3]));
+    restaurateur->setPhoneNumber(argv[0]);
+    restaurateur->setPassword(argv[1]);
+    restaurateur->setUserName(argv[2]);
+    restaurateur->setId(std::atoi(argv[3]));
     return 0;
 }
 

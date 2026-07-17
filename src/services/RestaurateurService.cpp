@@ -7,8 +7,8 @@ RestaurateurService::RestaurateurService() {
 
 bool RestaurateurService::insertRestaurant(const Restaurateur &owner, const std::string name) {
     Restaurant restaurant;
-    restaurant.set_ownerId(owner.get_id());
-    restaurant.set_name(name);
+    restaurant.setOwnerId(owner.getId());
+    restaurant.setName(name);
 
     restaurantDAO.insertRestaurant(restaurant);
     return true;
