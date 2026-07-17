@@ -8,15 +8,15 @@ public:
     User();
     User(const std::string &phoneNumber, const std::string &password, const std::string &userName);
     virtual ~User();
-    void set_phoneNumber(std::string phoneNumber);
-    void set_password(std::string password);
-    void set_userName(std::string userName);
-    int get_id() const;
-    std::string get_phoneNumber() const;
-    std::string get_password() const;
-    std::string get_userName() const;
+    void setPhoneNumber(std::string phoneNumber);
+    void setPassword(std::string password);
+    void setUserName(std::string userName);
+    int getId() const;
+    std::string getPhoneNumber() const;
+    std::string getPassword() const;
+    std::string getUserName() const;
     void showInformation() const;
-    void set_id(int id);
+    void setId(int id);
 
 private:
     int id;
