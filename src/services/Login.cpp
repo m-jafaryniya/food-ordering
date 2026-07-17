@@ -1,90 +1,116 @@
+#include "services//Login.h"
+#include <iostream>
+#include "models/Customer.h"
+#include "models/Restaurateur.h"
+#include "models/SystemAdministrator.h"
+#include "models/IdMaker.h"
 
-#include "services/Login.h"
+Login::Login(Database* database)
+    : database(database),
+      customerDAO(database),
+      restaurateurDAO(database),
+      systemAdministratorDAO(database) {}
 
 User* Login::login() {
     std::string phone;
-    std::string password;
-
-    std::cout << "Phone Number :" << std::endl;
+    std::cout << "---Welcome to Food Ordering System---" << std::endl;
+    std::cout << "Enter your phone number: ";
     std::cin >> phone;
 
-    if (customerDAO.existByphone(phone)) {
-        std::cout << "Password :" << std::endl;
-        std::cin >> password;
-        if (customerDAO.checkPassword(phone,password)) {
-            Customer customer;
-            customer = customerDAO.getCustomerByPhone(phone);
-            std::cout << "Login successfully! " << std::endl;
-            return new Customer(customer);
-        }
-        std::cout << "Wrong password!" << std::endl;
-        return nullptr;
-    }
+    bool isCustomer = customerDAO.existByphone(phone);
+    bool isRestaurateur = restaurateurDAO.existByPhone(phone);
+    bool isAdmin = systemAdministratorDAO.existByPhone(phone);
 
-    if (restaurateurDAO.existByPhone(phone)) {
-        std::cout << "Password :" << std::endl;
+    if (isCustomer || isRestaurateur || isAdmin) {
+        std::string password;
+        std::cout << "User found." << std::endl <<  "Enter password: ";
         std::cin >> password;
-        if (restaurateurDAO.checkPassword(phone,password)) {
-            Restaurateur restaurateur;
-            restaurateur = restaurateurDAO.getRestaurateurByPhone(phone);
-            std::cout << "Login successfully! " << std::endl;
-            return new Restaurateur(restaurateur);
-        }
-        std::cout << "Wrong password!" << std::endl;
-        return nullptr;
-    }
 
-    if (systemAdministratorDAO.existByPhone(phone)) {
-        std::cout << "Password :" << std::endl;
-        std::cin >> password;
-        if (systemAdministratorDAO.checkPassword(phone,password)) {
-            SystemAdministrator systemAdministrator;
-            systemAdministrator = systemAdministratorDAO.getSystemAdministratorByPhone(phone);
-            std::cout << "Login successfully! " << std::endl;
-            return new SystemAdministrator(systemAdministrator);
+        if (isCustomer && customerDAO.checkPassword(phone, password)) {
+            Customer* c = new Customer();
+            *c = customerDAO.getCustomerByPhone(phone);
+            return c;
         }
-        std::cout << "Wrong password!" << std::endl;
-        return nullptr;
+        if (isRestaurateur && restaurateurDAO.checkPassword(phone, password)) {
+            Restaurateur* r = new Restaurateur();
+            *r = restaurateurDAO.getRestaurateurByPhone(phone);
+            return r;
+        }
+        if (isAdmin && systemAdministratorDAO.checkPassword(phone, password)) {
+            SystemAdministrator* a = new SystemAdministrator();
+            *a = systemAdministratorDAO.getSystemAdministratorByPhone(phone);
+            return a;
+        }
+        else {
+            std::cout << "Invalid password!" << std::endl;
+            return nullptr;
+        }
+    } else {
+        std::cout << "Phone number not registered!" << std::endl;
+        return registerUser(phone);
     }
-
-    std::cout << "You don't have an account yet!" << std::endl;
-    std::cout << "Register now!" << std::endl;
-    return registerUser(phone);
 }
 
 User* Login::registerUser(const std::string& phone) {
-    std::string password;
-    std::string username;
-    std::cout << "Password :" << std::endl;
-    std::cin >> password;
-    std::cout << "Username :" << std::endl;
+    std::string username, password;
+    std::cout << "Enter Username: ";
     std::cin >> username;
+    std::cout << "Enter Password: ";
+    std::cin >> password;
 
-    int role;
-    std::cout << "---Choose your role (1/2/3)---" << std::endl;
-    std::cout << "1 : Customer" << std::endl << "2 : Restaurateur" << std::endl << "3 : SystemAdministrator" << std::endl;
-    std::cin >> role;
+    std::cout << "Choose your role:" << std::endl;
+    std::cout << "1. Customer" << std::endl;
+    std::cout << "2. Restaurateur" << std::endl;
+    std::cout << "3. System Administrator" << std::endl;
+    int roleChoice;
+    std::cin >> roleChoice;
 
-    switch (role) {
-        case 1: {
-            Customer customer(phone, password, username);
-            customerDAO.insertCustomer(customer);
-            return new Customer(customer);
+    if (roleChoice == 1) {
+        Customer customer;
+        customer.setId(IdMaker::getUserID());
+        customer.setPhoneNumber(phone);
+        customer.setUserName(username);
+        customer.setPassword(password);
+        customer.setWallet(0.0);
+
+        if (customerDAO.insertCustomer(customer)) {
+            std::cout << "Registration successful as Customer!" << std::endl;
+            Customer* c = new Customer();
+            *c = customer;
+            return c;
         }
-
-        case 2: {
-            Restaurateur restaurateur(phone, password, username);
-            restaurateurDAO.insertRestaurateur(restaurateur);
-            return new Restaurateur(restaurateur);
-        }
-
-        case 3: {
-            SystemAdministrator systemAdministrator(phone, password, username);
-            systemAdministratorDAO.insertSystemAdministrator(systemAdministrator);
-            return new SystemAdministrator(systemAdministrator);
-        }
-        default:
-            std::cout << "Wrong role!" << std::endl;
-            return nullptr;
     }
+    else if (roleChoice == 2) {
+        Restaurateur restaurateur;
+        restaurateur.setId(IdMaker::getUserID());
+        restaurateur.setPhoneNumber(phone);
+        restaurateur.setUserName(username);
+        restaurateur.setPassword(password);
+
+        if (restaurateurDAO.insertRestaurateur(restaurateur)) {
+            std::cout << "Registration successful as Restaurateur!" << std::endl;
+            Restaurateur* r = new Restaurateur();
+            *r = restaurateur;
+            return r;
+        }
+    }
+    else if (roleChoice == 3) {
+        SystemAdministrator systemAdministrator;
+        systemAdministrator.setId(IdMaker::getUserID());
+        systemAdministrator.setPhoneNumber(phone);
+        systemAdministrator.setUserName(username);
+        systemAdministrator.setPassword(password);
+
+        if (systemAdministratorDAO.insertSystemAdministrator(systemAdministrator)) {
+            std::cout << "Registration successful as System Administrator!" << std::endl;
+            SystemAdministrator* s = new SystemAdministrator();
+            *s = systemAdministrator;
+            return s;
+        }
+    }
+    else {
+        std::cout << "Invalid role choice!" << std::endl;
+    }
+
+    return nullptr;
 }

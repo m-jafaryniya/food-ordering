@@ -12,6 +12,7 @@ class Login {
     User* login();
 
     private:
+    Database* database;
     CustomerDAO customerDAO;
     RestaurateurDAO restaurateurDAO;
     SystemAdministratorDAO systemAdministratorDAO;
