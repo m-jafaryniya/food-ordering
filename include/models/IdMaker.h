@@ -4,14 +4,10 @@
 
 class IdMaker {
     public:
-    IdMaker();
-    virtual ~IdMaker();
 
-    static int FoodID;
-
-    static int get_UserID();
-    static int get_RestaurantID();
-    static int get_MenuID();
+    static int getUserID();
+    static int getRestaurantID();
+    static int getMenuID();
 
     private:
     static int UserID;

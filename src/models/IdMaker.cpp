@@ -3,16 +3,16 @@
 
 int IdMaker::UserID=10000;
 int IdMaker::RestaurantID=10000;
-int IdMaker::FoodID=1;
+int IdMaker::MenuID = 1;
 
-int IdMaker::get_UserID() {
+int IdMaker::getUserID() {
     return UserID++;
 }
 
-int IdMaker::get_RestaurantID() {
+int IdMaker::getRestaurantID() {
     return RestaurantID++;
 }
 
-int IdMaker::get_MenuID() {
+int IdMaker::getMenuID() {
     return MenuID++;
 }
