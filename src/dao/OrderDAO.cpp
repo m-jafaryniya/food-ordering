@@ -62,7 +62,7 @@ bool OrderDAO::insertOrder(const Order& order) {
 }
 
 bool OrderDAO::insertOrderItems(int orderId, const std::vector<CartItem>& items) {
-    std::string sql = "INSERT INTO CART_ITEM (ORDER_ID, ITEM_ID, QUANTITY, UNIT_PRICE) VALUES (?,?,?,?);";
+    std::string sql = "INSERT INTO ORDER_ITEMS (ORDER_ID, ITEM_ID, QUANTITY, UNIT_PRICE) VALUES (?,?,?,?);";
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(database->getConnection(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         return false;
@@ -85,7 +85,7 @@ bool OrderDAO::insertOrderItems(int orderId, const std::vector<CartItem>& items)
 }
 
 bool OrderDAO::deleteOrderItems(int orderId) {
-    std::string sql = "DELETE FROM CART_ITEM WHERE ORDER_ID = ?;";
+    std::string sql = "DELETE FROM ORDER_ITEMS WHERE ORDER_ID = ?;";
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(database->getConnection(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         return false;
@@ -133,7 +133,7 @@ bool OrderDAO::updateOrderStatus(int orderId, OrderStatus status) {
 
 std::vector<CartItem> OrderDAO::getOrderItems(int orderId) {
     std::vector<CartItem> items;
-    std::string sql ="SELECT ITEM_ID, QUANTITY, UNIT_PRICE FROM CART_ITEM WHERE ORDER_ID=? ;";
+    std::string sql ="SELECT ITEM_ID, QUANTITY, UNIT_PRICE FROM ORDER_ITEMS WHERE ORDER_ID=? ;";
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(database->getConnection(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         return items;
