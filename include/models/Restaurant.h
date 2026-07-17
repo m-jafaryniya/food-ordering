@@ -21,6 +21,7 @@ public:
     int get_operationTime() const;
     std::string get_phone() const;
     std::string get_information() const;
+    int get_ownerId() const;
     void set_id(int id);
     void set_name(const std::string &name);
     void set_address(const Address& address);
@@ -28,6 +29,7 @@ public:
     void set_operationTime(const int operationTime);
     void set_phone(const std::string& phone);
     void set_information(const std::string& information);
+    void set_ownerId(const int ownerId);
     void addMenuItem(Menu *menu);
     void removeMenuItem(int id);
     std::vector<Menu *>& getMenuList();
@@ -40,6 +42,7 @@ private:
     int OperationTime;
     std::string phone;
     std::string information;
+    int ownerId;
 };
 
 #endif //FOOD_ORDERING_SYSTEM_RESTAURANT_H

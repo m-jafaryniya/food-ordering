@@ -47,6 +47,10 @@ std::string Restaurant::get_information() const {
     return information;
 }
 
+int Restaurant::get_ownerId() const {
+    return ownerId;
+}
+
 void Restaurant::set_id(int id) {
     this->ID = id;
 }
@@ -73,6 +77,10 @@ void Restaurant::set_phone(const std::string& phone) {
 
 void Restaurant::set_information(const std::string& information) {
     this->information = information;
+}
+
+void Restaurant::set_ownerId(const int ownerId) {
+    this->ownerId = ownerId;
 }
 
 void Restaurant::addMenuItem(Menu *menu) {
