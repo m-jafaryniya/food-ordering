@@ -69,7 +69,8 @@ void Database::createTables() {
         "ACTIVE INTEGER,"
         "OPERATION_TIME INTEGER,"
         "PHONE TEXT UNIQUE NOT NULL,"
-        "INFORMATION TEXT NOT NULL"
+        "INFORMATION TEXT NOT NULL,"
+        "OWNER_ID INTEGER"
         ");";
     if (sqlite3_exec(db, restaurantTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::cout << errMsg << std::endl;
