@@ -9,7 +9,7 @@
 
 class SystemAdministratorService {
     public:
-    SystemAdministratorService();
+    SystemAdministratorService(Database* database);
     bool addRestaurant(const Restaurant &restaurant);
     bool activeRestaurant(int restaurantId);
     bool deActiveRestaurant(int restaurantId);

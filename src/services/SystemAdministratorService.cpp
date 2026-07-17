@@ -1,12 +1,12 @@
 
 #include "services/SystemAdministratorService.h"
 
-SystemAdministratorService::SystemAdministratorService() {
-
-}
+SystemAdministratorService::SystemAdministratorService(Database* database)
+:restaurantDAO(database),customerDAO(database),restaurateurDAO(database),orderDAO(database){}
 
 bool SystemAdministratorService::addRestaurant(const Restaurant &restaurant) {
-
+    restaurantDAO.insertRestaurant(restaurant);
+    return true;
 }
 
 bool SystemAdministratorService::activeRestaurant(int restaurantId) {
@@ -34,7 +34,7 @@ int SystemAdministratorService::getRestaurantCount() {
 }
 
 int SystemAdministratorService::getRestaurateurCount() {
-    return restaurateurDAO.getRestaurateurs().size();
+    return 0;
 }
 
 int SystemAdministratorService::getCustomerCount() {
@@ -42,7 +42,7 @@ int SystemAdministratorService::getCustomerCount() {
 }
 
 int SystemAdministratorService::getOrderCount(int restaurantId) {
-    return orderDAO.getOrders().size();
+    return 0;
 }
 
 double SystemAdministratorService::getRestaurantTotalSales(int restaurantId) {
@@ -57,10 +57,5 @@ double SystemAdministratorService::getRestaurantTotalSales(int restaurantId) {
 }
 
 double SystemAdministratorService::getTotalSales() {
-    double total =0 ;
-    std::vector<Order> orders = orderDAO.getOrders();
-    for (const Order &order : orders) {
-        total+=order.get_totalPrice();
-    }
-    return total;
+    return 0;
 }
