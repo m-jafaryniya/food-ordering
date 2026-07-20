@@ -2,12 +2,18 @@
 #include "services/RestaurateurService.h"
 
 RestaurateurService::RestaurateurService(Database* database)
-    :menuDAO(database),restaurantDAO(database),orderDAO(database){}
+    :restaurantDAO(database),menuDAO(database),orderDAO(database){}
 
 bool RestaurateurService::insertRestaurant(const Restaurateur &owner, const std::string name) {
     Restaurant restaurant;
     restaurant.setOwnerId(owner.getId());
     restaurant.setName(name);
+    restaurant.setActive(true);
+    restaurant.setOperationTime(30);
+    restaurant.setPhone("");
+    restaurant.setInformation("");
+    Address address("", "", "", 0);
+    restaurant.setAddress(address);
 
     restaurantDAO.insertRestaurant(restaurant);
     return true;

@@ -50,11 +50,14 @@ int Order::get_restaurantId() const {
 }
 
 double Order::get_totalPrice() const {
-    double totalPrice=0;
-    for (const CartItem& item : items) {
-        totalPrice += item.get_totalPrice();
+    if (totalPrice > 0) {
+        return totalPrice;
     }
-    return totalPrice;
+    double TotalPrice=0;
+    for (const CartItem& item : items) {
+        TotalPrice += item.get_totalPrice();
+    }
+    return TotalPrice;
 }
 
 OrderStatus Order::get_status() const {

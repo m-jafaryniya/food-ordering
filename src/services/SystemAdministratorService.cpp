@@ -12,15 +12,13 @@ bool SystemAdministratorService::addRestaurant(const Restaurant &restaurant) {
 }
 
 bool SystemAdministratorService::activeRestaurant(int restaurantId) {
-    Restaurant restaurant;
-    restaurantDAO.getRestaurantById(restaurantId);
+    Restaurant restaurant = restaurantDAO.getRestaurantById(restaurantId);
     restaurant.setActive(true);
     return restaurantDAO.updateRestaurant(restaurant);
 }
 
 bool SystemAdministratorService::deActiveRestaurant(int restaurantId) {
-    Restaurant restaurant;
-    restaurantDAO.getRestaurantById(restaurantId);
+    Restaurant restaurant = restaurantDAO.getRestaurantById(restaurantId);
     restaurant.setActive(false);
     return restaurantDAO.updateRestaurant(restaurant);
 }
