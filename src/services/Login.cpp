@@ -47,7 +47,14 @@ User* Login::login() {
         }
     } else {
         std::cout << "Phone number not registered!" << std::endl;
-        return registerUser(phone);
+        std::cout << "Let's create new account!" << std::endl;
+        User* newUser = registerUser(phone);
+
+        if (newUser == nullptr) {
+            std::cout << "registration failed!" << std::endl;
+            return  nullptr;
+        }
+        return newUser;
     }
 }
 
